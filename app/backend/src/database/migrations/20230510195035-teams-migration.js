@@ -4,7 +4,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('teams', {
       id: {
-        type: Sequelize.Number,
+        type: Sequelize.NUMBER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,

@@ -8,6 +8,11 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
+    homeTeamId
+    homeTeamGoals
+    awayTeamId
+    awayTeamGoals
+    inProgress
   },
 
   async down (queryInterface, Sequelize) {

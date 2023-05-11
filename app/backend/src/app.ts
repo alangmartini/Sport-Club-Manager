@@ -9,11 +9,11 @@ class App {
     this.config();
 
     // Não remover essa rota
-    this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.get('/', (_req: any, res: any) => res.json({ ok: true }));
   }
 
   private config():void {
-    const accessControl: express.RequestHandler = (_req, res, next) => {
+    const accessControl: express.RequestHandler = (_req: any, res: any, next: any) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
       res.header('Access-Control-Allow-Headers', '*');
