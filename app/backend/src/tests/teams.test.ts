@@ -2,7 +2,7 @@
 // Framework
 import * as sinon from 'sinon';
 import * as chai from 'chai';
-import chaiHttp from 'chai-http';
+import chaiHttp = require('chai-http');
 import { app } from '../app';
 
 // Type
@@ -35,10 +35,10 @@ describe('Tests teams endpoint', () => {
 
   it('Should return all teams', async () => {
     chaiHttpResponse = await chai
-      .request(app)
-      .get('/teams');
-
-    expect(chaiHttpResponse.body).to.equal(teamsMock.ALL_TEAMS);
+    .request(app)
+    .get('/teams');
+    
+    expect(chaiHttpResponse.body).to.deep.equal(teamsMock.ALL_TEAMS);
     expect(chaiHttpResponse.status).to.equal(StatusCodes.OK);
   });
 });
