@@ -18,7 +18,7 @@ class BoomErrorHandle implements IErrorHandle {
         this._boomError = Boom.internal()
     }
 
-    this.updateStatusAndOutput(this._boomError)
+    this.updateStatusAndOutput(this._boomError);
   }
 
   updateStatusAndOutput(boomError: Boom.Boom) {
