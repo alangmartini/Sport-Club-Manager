@@ -13,4 +13,9 @@ const ALL_TEAMS = [
   },
 ];
 
-export default { ALL_TEAMS };
+const ONE_TEAM = {
+  "id": 5,
+  "teamName": "Cruzeiro"
+}
+
+export default { ALL_TEAMS, ONE_TEAM };

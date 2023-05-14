@@ -1,7 +1,7 @@
 import * as Boom from '@hapi/boom';
 
 function errorMiddleware(error) {
-  return Boom.badImplementation(new Error('oi'))
+  return Boom.notFound(new Error('Time não encontrado'))
 }
 
 console.log(errorMiddleware('hi'))

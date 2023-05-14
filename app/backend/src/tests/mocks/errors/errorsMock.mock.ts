@@ -6,4 +6,10 @@ const badImplementationError: IExpressErrorOutput = {
   message: 'An internal server error occurred'
 }
 
-export default { badImplementationError };
+const notFoundError: IExpressErrorOutput = {
+  statusCode: 404,
+  error: 'Not Found',
+  message: 'Time não encontrado'
+}
+
+export default { badImplementationError, notFoundError };

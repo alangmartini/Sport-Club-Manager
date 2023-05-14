@@ -12,7 +12,8 @@ import ITeam from '../interfaces/teams/teams.interface';
 
 // Mocks
 import teamsMock from './mocks/teams/teams.mock';
-import errorsMock from './mocks/errors/badImplementation.mock';
+import errorsMock from './mocks/errors/errorsMock.mock';
+
 // Models
 import Teams from '../database/models/teams.model';
 
@@ -23,11 +24,11 @@ afterEach(()=>{
   sinon.restore();
 })
 
-describe('Tests teams endpoint', () => {
+describe('Teams findAll', () => {
   let chaiHttpResponse: Response;
 
   describe('Successful returns', function () {
-    before(async () => {
+    beforeEach(async () => {
       sinon
         .stub(Teams, "findAll")
         .resolves(teamsMock.ALL_TEAMS as ITeam[]);
@@ -50,7 +51,7 @@ describe('Tests teams endpoint', () => {
         .resolves([])
     });
 
-    it('Should return itnernal error', async () => {
+    it('Should return internal error', async () => {
       chaiHttpResponse = await chai
       .request(app)
       .get('/teams');
@@ -58,5 +59,53 @@ describe('Tests teams endpoint', () => {
       expect(chaiHttpResponse.body).to.deep.equal(errorsMock.badImplementationError);
       expect(chaiHttpResponse.status).to.equal(errorsMock.badImplementationError.statusCode);
     });
+  })
+});
+
+describe('Teams findById', () => {
+  let chaiHttpResponse: Response;
+
+  describe('Successful returns', function () {
+    beforeEach(async () => {
+      sinon
+        .stub(Teams, "findByPk")
+        .resolves(teamsMock.ONE_TEAM as ITeam);
+    });
+
+    it('Should return one team with correct id', async () => {
+      chaiHttpResponse = await chai
+      .request(app)
+      .get('/teams/5');
+      
+      expect(chaiHttpResponse.body).to.deep.equal(teamsMock.ONE_TEAM);
+      expect(chaiHttpResponse.status).to.equal(StatusCodes.OK);
+    });  
+  })
+  
+  describe('Unsucceful returns', function () {
+    it('Should return not found', async () => {
+      sinon
+      .stub(Teams, 'findByPk')
+      .resolves(null)
+
+      chaiHttpResponse = await chai
+      .request(app)
+      .get('/teams');
+      
+      expect(chaiHttpResponse.body).to.deep.equal(errorsMock.notFoundError);
+      expect(chaiHttpResponse.status).to.equal(errorsMock.notFoundError.statusCode);
+    });
+
+    it('Should return internal error', async () => {
+      sinon.stub(Teams, 'findByPk').callsFake(() => { throw new Error() });
+
+      chaiHttpResponse = await chai
+      .request(app)
+      .get('/teams');
+      
+      expect(chaiHttpResponse.body).to.deep.equal(errorsMock.badImplementationError);
+      expect(chaiHttpResponse.status).to.equal(errorsMock.badImplementationError.statusCode);
+    });
+    
   })
 });
