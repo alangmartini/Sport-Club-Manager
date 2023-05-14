@@ -1,5 +1,5 @@
 import { Boom } from '@hapi/boom';
-import ITeam from '../interfaces/teams.interface';
+import ITeam from '../interfaces/teams/teams.interface';
 import SequelizeTeam from '../database/models/teams.model';
 
 export default class TeamsService {
@@ -16,10 +16,14 @@ export default class TeamsService {
     if (
       !allTeams.every(TeamsService.assertIsTeam)
     ) {
+      console.log('deu ruim')
       // Controller will forward error to middleware.
       const error = new Error('Internal Error');
       error.name
       throw new Error('Internal Error');
     }
+
+    return allTeams;
   }
 }
+

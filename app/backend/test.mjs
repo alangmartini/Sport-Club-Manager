@@ -5,6 +5,8 @@ function errorMiddleware(error) {
 }
 
 console.log(errorMiddleware('hi'))
+console.log(typeof errorMiddleware('hi').output.payload.error)
+
 
 // const error = new Error('Internal Error');
 // error.name = 'badImplementation'
