@@ -4,7 +4,7 @@ import {
   Response,
 } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import TeamsService from '../services/teams.services';
+import TeamsService from '../services/teams.service';
 
 // Created here because of 50 char long line limitation.
 const ERROR = StatusCodes.INTERNAL_SERVER_ERROR;
