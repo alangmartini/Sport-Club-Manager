@@ -1,7 +1,7 @@
 import { Boom } from '@hapi/boom';
 import ITeam from '../interfaces/teams/teams.interface';
 import SequelizeTeam from '../database/models/teams.model';
-import EnumError from '../Enums/error.enum';
+import EnumError from '../enums/error.enum';
 
 export default class TeamsService {
   private teamsModel = SequelizeTeam;

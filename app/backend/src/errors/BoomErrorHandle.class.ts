@@ -1,5 +1,5 @@
 import * as Boom from '@hapi/boom';
-import EnumError from '../Enums/error.enum';
+import EnumError from '../enums/error.enum';
 import TStatusCode from '../types/IStatusCode.type';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
 import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';

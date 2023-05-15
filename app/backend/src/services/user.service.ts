@@ -1,4 +1,4 @@
-import EnumError from '../Enums/error.enum';
+import EnumError from '../enums/error.enum';
 import Users from '../database/models/users.model';
 import IUser from '../interfaces/users/IUser.interface';
 import * as bcrypt from 'bcryptjs';
