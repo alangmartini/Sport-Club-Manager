@@ -9,8 +9,11 @@ export const VALID_PASSWORD =
 export const INVALID_PASSWORD = '1234';
 
 const USER = {
+  id: 1,
   email: VALID_EMAIL,
   password: VALID_PASSWORD,
+  username: 'coolusername',
+  role: 'user'
 };
 
 const USER_INVALID_EMAIL = {

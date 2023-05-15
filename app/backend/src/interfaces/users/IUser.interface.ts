@@ -1,4 +1,5 @@
 import { Model } from 'sequelize';
+import Users from '../../database/models/users.model';
 
 interface IUser extends Model {
   id: number;
