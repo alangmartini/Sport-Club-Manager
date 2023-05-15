@@ -18,8 +18,6 @@ export default class TeamsService {
       !allTeams.every(TeamsService.assertIsTeam)
       || !allTeams.length
     ) {
-      console.log('im here');
-      
       // Controller will forward error to middleware.
       const error = new Error('Internal Error');
       error.name = EnumError.badImplementation;
@@ -27,6 +25,24 @@ export default class TeamsService {
     }
 
     return allTeams;
+  }
+
+  async findById(id: string): Promise<ITeam> {
+    const team = await this.teamsModel.findByPk(id);
+    
+    if (team === null) {
+      const error = new Error();
+      error.name = EnumError.notFound;
+      throw error;
+    }
+
+    if (!TeamsService.assertIsTeam(team)) {
+      const error = new Error();
+      error.name = EnumError.badImplementation;
+      throw error;
+    }
+
+    return team;
   }
 }
 

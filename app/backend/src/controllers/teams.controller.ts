@@ -14,6 +14,7 @@ export default class TeamsController {
 
   constructor() {
     this.findAll = this.findAll.bind(this);
+    this.findById = this.findById.bind(this);
 
     this.TeamService = new TeamsService();
   }
@@ -28,6 +29,22 @@ export default class TeamsController {
         await this.TeamService.findAll();
 
       res.status(StatusCodes.OK).json(teams);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async findById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    const { id } = req.params;
+
+    try {
+      const team = await this.TeamService.findById(id);
+
+      res.status(StatusCodes.OK).json(team);
     } catch (error) {
       next(error);
     }

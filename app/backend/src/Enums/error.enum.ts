@@ -1,5 +1,6 @@
 enum EnumError {
-  badImplementation = "badImplementation"
+  badImplementation = "badImplementation",
+  notFound = 'notFound'
 }
 
 export default EnumError

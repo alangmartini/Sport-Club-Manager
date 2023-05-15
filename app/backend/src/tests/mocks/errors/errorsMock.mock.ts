@@ -9,7 +9,7 @@ const badImplementationError: IExpressErrorOutput = {
 const notFoundError: IExpressErrorOutput = {
   statusCode: 404,
   error: 'Not Found',
-  message: 'Time não encontrado'
+  message: 'Not Found'
 }
 
 export default { badImplementationError, notFoundError };

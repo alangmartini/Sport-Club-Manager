@@ -66,13 +66,11 @@ describe('Teams findById', () => {
   let chaiHttpResponse: Response;
 
   describe('Successful returns', function () {
-    beforeEach(async () => {
-      sinon
-        .stub(Teams, "findByPk")
-        .resolves(teamsMock.ONE_TEAM as ITeam);
-    });
-
     it('Should return one team with correct id', async () => {
+      sinon
+      .stub(Teams, "findByPk")
+      .resolves(teamsMock.ONE_TEAM as ITeam);
+
       chaiHttpResponse = await chai
       .request(app)
       .get('/teams/5');
@@ -90,7 +88,7 @@ describe('Teams findById', () => {
 
       chaiHttpResponse = await chai
       .request(app)
-      .get('/teams');
+      .get('/teams/5');
       
       expect(chaiHttpResponse.body).to.deep.equal(errorsMock.notFoundError);
       expect(chaiHttpResponse.status).to.equal(errorsMock.notFoundError.statusCode);
@@ -101,7 +99,7 @@ describe('Teams findById', () => {
 
       chaiHttpResponse = await chai
       .request(app)
-      .get('/teams');
+      .get('/teams/5');
       
       expect(chaiHttpResponse.body).to.deep.equal(errorsMock.badImplementationError);
       expect(chaiHttpResponse.status).to.equal(errorsMock.badImplementationError.statusCode);
