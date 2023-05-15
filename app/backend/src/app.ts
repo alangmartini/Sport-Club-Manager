@@ -1,6 +1,7 @@
 import * as express from 'express';
 import teamRoute from './routes/team.route';
 import errorMiddleware from './middlewares/error.middleware';
+import loginRoute from './routes/login.route';
 
 class App {
   public app: express.Express;
@@ -26,6 +27,7 @@ class App {
     this.app.use(accessControl);
 
     this.app.use('/teams', teamRoute);
+    this.app.use('/login', loginRoute);
 
     this.app.use(errorMiddleware)
   }

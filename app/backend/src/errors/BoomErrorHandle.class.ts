@@ -18,6 +18,9 @@ class BoomErrorHandle implements IErrorHandle {
       case EnumError.notFound:
         this._boomError = Boom.notFound();
         break;
+      case EnumError.unauthorized:
+        this._boomError = Boom.unauthorized();
+        break;
       default:
         this._boomError = Boom.internal()
     }
