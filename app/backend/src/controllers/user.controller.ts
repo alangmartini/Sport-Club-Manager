@@ -21,7 +21,6 @@ export default class UserController {
 
     try {
       const user = { email, password };
-      console.log('user is:', user);
 
       // If something is wrong, login service will throw an error
       const loggedUser = await this.userService.login(user);
