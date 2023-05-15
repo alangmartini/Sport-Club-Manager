@@ -20,7 +20,6 @@ export default class UserService {
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      console.log('match is:', match);
       const error = new Error;
       error.name = EnumError.unauthorized;
       throw error;
