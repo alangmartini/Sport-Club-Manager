@@ -26,20 +26,20 @@ afterEach(() => {
   sinon.restore();
 });
 
-describe('Teams findAll', () => {
+describe('User login', () => {
   let chaiHttpResponse: Response;
 
   describe('Successful returns', function () {
     beforeEach(async () => {
       sinon
         .stub(Users, 'findOne')
-        .resolves(usersMock.USER as IUser);
+        .resolves({ ...usersMock.USER, password: } as IUser);
     });
 
-    it('Should return a token', async () => {
+    it.only('Should return a token', async () => {
       chaiHttpResponse = await chai
         .request(app)
-        .get('/login')
+        .post('/login')
         .send(usersMock.USER);
 
       expect(chaiHttpResponse.body).to.deep.equal(
@@ -52,10 +52,52 @@ describe('Teams findAll', () => {
   });
 
   describe('Unsucceful returns', function () {
+    it('Should return wrong password error', async () => {
+      sinon
+      .stub(Users, 'findOne')
+      .resolves({ ...usersMock.USER, password: 'hmmmmmmmmm' } as IUser);
+ 
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          email: usersMock.VALID_EMAIL,
+          password: usersMock.VALID_PASSWORD,
+        });
+
+      expect(chaiHttpResponse.body).to.deep.equal(
+        authErrors.authInvalidEmailOrPass,
+      );
+      expect(chaiHttpResponse.status).to.equal(
+        StatusCodes.UNAUTHORIZED,
+      );
+    });
+
+    it('Should return not found error', async () => {
+      sinon
+      .stub(Users, 'findOne')
+      .resolves(null);
+
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          email: usersMock.VALID_EMAIL,
+          password: usersMock.VALID_PASSWORD,
+        });
+
+      expect(chaiHttpResponse.body).to.deep.equal(
+        errorsMock.notFoundError,
+      );
+      expect(chaiHttpResponse.status).to.equal(
+        StatusCodes.NOT_FOUND,
+      );
+    });
+
     it('Should return lacking email error', async () => {
       chaiHttpResponse = await chai
         .request(app)
-        .get('/login')
+        .post('/login')
         .send({
           password: usersMock.VALID_PASSWORD,
         });
@@ -67,10 +109,11 @@ describe('Teams findAll', () => {
         StatusCodes.BAD_REQUEST,
       );
     });
+
     it('Should return lacking password error', async () => {
       chaiHttpResponse = await chai
         .request(app)
-        .get('/login')
+        .post('/login')
         .send({ email: usersMock.VALID_EMAIL });
 
       expect(chaiHttpResponse.body).to.deep.equal(
@@ -80,10 +123,11 @@ describe('Teams findAll', () => {
         StatusCodes.BAD_REQUEST,
       );
     });
+
     it('Should return invalid email error', async () => {
       chaiHttpResponse = await chai
         .request(app)
-        .get('/login')
+        .post('/login')
         .send({
           email: usersMock.INVALID_EMAIL,
           password: usersMock.VALID_PASSWORD,
@@ -96,10 +140,11 @@ describe('Teams findAll', () => {
         StatusCodes.UNAUTHORIZED,
       );
     });
+
     it('Should return invalid password error', async () => {
       chaiHttpResponse = await chai
         .request(app)
-        .get('/login')
+        .post('/login')
         .send({
           email: usersMock.VALID_EMAIL,
           password: usersMock.INVALID_PASSWORD,
