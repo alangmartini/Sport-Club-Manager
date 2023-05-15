@@ -15,7 +15,7 @@ function errorMiddleware(
   _next: NextFunction,
 ) {
   const errorClient: IErrorClient =
-    new ErrorClient(error);
+  new ErrorClient(error);
 
   const statusCode: TStatusCode =
     errorClient.getStatus();
