@@ -4,6 +4,7 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
+import * as bcrypt from 'bcryptjs';
 
 // Type
 import { Response } from 'superagent';
@@ -19,6 +20,7 @@ import usersMock from './mocks/users/users.mock';
 // Class
 import Users from '../database/models/users.model';
 import HashClient from '../auth/HashClient.auth';
+
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -62,6 +64,8 @@ describe('User login', () => {
 
   describe('Unsucceful returns', function () {
     it('Should return wrong password error', async () => {
+      sinon.stub(bcrypt, 'compare').resolves(false);
+  
       sinon.stub(Users, 'findOne').resolves({
         ...usersMock.USER,
         password: 'hmmmmmmmmm',
@@ -75,7 +79,7 @@ describe('User login', () => {
           password: usersMock.VALID_PASSWORD,
         });
 
-      expect('token' in chaiHttpResponse.body).to.deep.equal(
+      expect(chaiHttpResponse.body).to.deep.equal(
         authErrors.authInvalidEmailOrPass,
       );
       expect(chaiHttpResponse.status).to.equal(
