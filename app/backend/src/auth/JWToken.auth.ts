@@ -7,7 +7,6 @@ class JWTokenProvider implements ITokenProvider{
   private _secret: Secret = process.env.JWT_SECRET || 'secret';
 
   generateToken(payload: ITokenPayload): string {
-    
     return jwt.sign(payload, this._secret)
   }
   
