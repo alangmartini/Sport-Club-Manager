@@ -16,11 +16,13 @@ import errorsMock from './mocks/errors/errorsMock.mock';
 import tokenMock from './mocks/users/token.mock';
 import usersMock from './mocks/users/users.mock';
 
-// Models
+// Class
 import Users from '../database/models/users.model';
+import HashClient from '../auth/HashClient.auth';
 
 chai.use(chaiHttp);
 const { expect } = chai;
+const hashClient = new HashClient();
 
 afterEach(() => {
   sinon.restore();
@@ -31,20 +33,27 @@ describe('User login', () => {
 
   describe('Successful returns', function () {
     beforeEach(async () => {
-      sinon
-        .stub(Users, 'findOne')
-        .resolves({ ...usersMock.USER, password: } as IUser);
+      const hashedPassword =
+        await hashClient.hashPassword(
+          usersMock.USER.password,
+        );
+    
+      sinon.stub(Users, 'findOne').resolves({
+        ...usersMock.USER,
+        password: hashedPassword,
+      } as IUser);
     });
 
-    it.only('Should return a token', async () => {
+    it('Should return a token', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
         .send(usersMock.USER);
 
-      expect(chaiHttpResponse.body).to.deep.equal(
-        tokenMock.token,
-      );
+        expect(
+          'token' in chaiHttpResponse.body,
+        ).to.be.equal(true);
+
       expect(chaiHttpResponse.status).to.equal(
         StatusCodes.OK,
       );
@@ -53,10 +62,11 @@ describe('User login', () => {
 
   describe('Unsucceful returns', function () {
     it('Should return wrong password error', async () => {
-      sinon
-      .stub(Users, 'findOne')
-      .resolves({ ...usersMock.USER, password: 'hmmmmmmmmm' } as IUser);
- 
+      sinon.stub(Users, 'findOne').resolves({
+        ...usersMock.USER,
+        password: 'hmmmmmmmmm',
+      } as IUser);
+
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -65,7 +75,7 @@ describe('User login', () => {
           password: usersMock.VALID_PASSWORD,
         });
 
-      expect(chaiHttpResponse.body).to.deep.equal(
+      expect('token' in chaiHttpResponse.body).to.deep.equal(
         authErrors.authInvalidEmailOrPass,
       );
       expect(chaiHttpResponse.status).to.equal(
@@ -74,9 +84,7 @@ describe('User login', () => {
     });
 
     it('Should return not found error', async () => {
-      sinon
-      .stub(Users, 'findOne')
-      .resolves(null);
+      sinon.stub(Users, 'findOne').resolves(null);
 
       chaiHttpResponse = await chai
         .request(app)

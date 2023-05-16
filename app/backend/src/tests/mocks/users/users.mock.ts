@@ -1,12 +1,15 @@
-export const VALID_EMAIL =
+const VALID_EMAIL =
   'definatelyNotSantaClaus@gmail.com';
 
-export const INVALID_EMAIL =
+const INVALID_EMAIL =
   'example.example.com';
 
-export const VALID_PASSWORD =
+const VALID_PASSWORD =
   'lookatthisverycoolpassword';
-export const INVALID_PASSWORD = '1234';
+
+const INVALID_PASSWORD = '1234';
+
+const HASHED_PASSWORD = '$2a$10$yrM1cieWQfsbJ4fZuN2EceZAbeS9Lfys9x72yn7tuycE.1.A1mbte';
 
 const USER = {
   id: 1,
@@ -34,4 +37,5 @@ export default {
   INVALID_EMAIL,
   VALID_PASSWORD,
   INVALID_PASSWORD,
+  HASHED_PASSWORD
 };
