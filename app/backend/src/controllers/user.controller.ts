@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import UserService from '../services/user.service'
 import * as jwt from 'jsonwebtoken'
 import { StatusCodes } from 'http-status-codes';
+import TokenClient from '../auth/TokenClient.auth';
 
 export default class UserController {
   private userService: UserService;
@@ -25,11 +26,9 @@ export default class UserController {
       // If something is wrong, login service will throw an error
       const loggedUser = await this.userService.login(user);
 
+      const tokenClient = new TokenClient();
       const payload = { userId: loggedUser.id};
-      const secret = process.env.JWT_SECRET || 'secret';
-      const token = jwt.sign(payload, secret);
-      console.log('token is:', token);
-      
+      const token = tokenClient.generateToken(payload);
 
       res.status(StatusCodes.OK).json({ token });
     } catch(error) {
