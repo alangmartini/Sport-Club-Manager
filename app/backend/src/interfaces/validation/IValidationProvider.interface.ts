@@ -1,7 +1,7 @@
-import IJOISchema from './Joi/IJOISchema.interface';
+import BasedError from '../../errors/BasedError.class';
 
 interface IValidationProvider {
-  validate(dataToValidate: unknown): true | Error;
+  validate(dataToValidate: unknown): true | BasedError;
 }
 
 export default IValidationProvider;

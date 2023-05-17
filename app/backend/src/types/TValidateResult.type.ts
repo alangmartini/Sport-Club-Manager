@@ -1,3 +1,5 @@
-type TValidateResult = true | Error;
+import BasedError from '../errors/BasedError.class';
+
+type TValidateResult = true | BasedError;
 
 export default TValidateResult

@@ -4,26 +4,51 @@ import IJOISchema from '../../interfaces/validation/Joi/IJOISchema.interface';
 import EnumValidation from '../../enums/validation.enum';
 import IValidationProvider from '../../interfaces/validation/IValidationProvider.interface';
 import TValidateResult from '../../types/TValidateResult.type';
+import TRuleSet from '../../types/TRuleSet.type';
+import BasedError from '../../errors/BasedError.class';
+import EnumError from '../../enums/error.enum';
 
-class JOIProvider<T> implements IValidationProvider{
-  private _schema: IJOISchema;
+class JOIProvider<T>
+  implements IValidationProvider
+{
+  private _schema?: IJOISchema;
+  ruleSet: TRuleSet;
 
-  constructor(ruleSet: EnumValidation) {
-    switch(ruleSet) {
-      case EnumValidation.EMAIL_INVALID || EnumValidation.PASSWORD_INVALID:
-        this._schema = new schema.schemaEmailAndPassword();
-        break;
+  constructor(ruleSet: TRuleSet) {
+    this.ruleSet = ruleSet;
+
+    switch (ruleSet) {
+      case EnumValidation.EMAIL_INVALID:
+        this._schema = new schema
+          .schemaEmailAndPassword();
+
+        return;
+      case EnumValidation.PASSWORD_INVALID:
+        this._schema = new schema
+          .schemaEmailAndPassword();
+
+        return;
     }
   }
 
-  validate(dataToValidate: T): TValidateResult  {
-    const result: JOI.ValidationResult = this._schema.validate(dataToValidate);
+  validate(dataToValidate: T): TValidateResult {
+    if (!this._schema) {
+      const type = EnumError.BAD_IMPLEMENTATION;
+      return new BasedError('No schema', type);
+      
+    }
 
-    // Here is were the error will be created. It must have a 
+    const result: JOI.ValidationResult =
+      this._schema.validate(dataToValidate);
     
+    // If error, create a generic BasedError
+    // with the ruleSet applied on type.
     if (result.error) {
+      const type = this.ruleSet;
 
-      return result.error;
+      const error = new BasedError('', this.ruleSet);
+      
+      return error;
     }
 
     return true;

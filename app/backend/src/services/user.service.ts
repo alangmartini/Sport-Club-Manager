@@ -13,7 +13,7 @@ export default class UserService {
     const user = await this.userModel.findOne({ where: { email}});
     
     if (user === null) {
-      const error = new BasedError('', EnumError.);
+      const error = new BasedError('', EnumError.NOT_FOUND);
 
       throw error;
     }
@@ -21,8 +21,8 @@ export default class UserService {
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      const error = new BasedError('', EnumError.);
-      error.type = EnumError.unauthorized;
+      const error = new BasedError('', EnumError.UNAUTHORIZED);
+      
       throw error;
     }
 

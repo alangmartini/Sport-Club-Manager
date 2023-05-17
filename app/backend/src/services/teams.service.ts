@@ -22,7 +22,7 @@ export default class TeamsService {
       // Controller will forward error to middleware.
       const error = new BasedError(
         'Internal Error',
-        EnumError.badImplementation
+        EnumError.BAD_IMPLEMENTATION
       );
       throw new Error('Internal Error');
     }
@@ -34,14 +34,14 @@ export default class TeamsService {
     const team = await this.teamsModel.findByPk(id);
     
     if (team === null) {
-      const error = new BasedError('', EnumError.notFound);
+      const error = new BasedError('', EnumError.NOT_FOUND);
       throw error;
     }
 
     if (!TeamsService.assertIsTeam(team)) {
       const error = new BasedError(
         '',
-        EnumError.badImplementation
+        EnumError.BAD_IMPLEMENTATION
       );
       
       throw error;
