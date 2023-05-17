@@ -3,6 +3,7 @@ import Users from '../database/models/users.model';
 import IUser from '../interfaces/users/IUser.interface';
 import * as bcrypt from 'bcryptjs';
 import IUserBody from '../interfaces/users/IUserBody.interface';
+import BasedError from '../errors/BasedError.class';
 
 export default class UserService {
   private userModel = Users;
@@ -12,15 +13,15 @@ export default class UserService {
     const user = await this.userModel.findOne({ where: { email}});
     
     if (user === null) {
-      const error = new Error();
-      error.type = EnumError.notFound;
+      const error = new BasedError('', EnumError.);
+
       throw error;
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      const error = new Error;
+      const error = new BasedError('', EnumError.);
       error.type = EnumError.unauthorized;
       throw error;
     }

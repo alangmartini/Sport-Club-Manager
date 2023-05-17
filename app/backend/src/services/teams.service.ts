@@ -34,14 +34,16 @@ export default class TeamsService {
     const team = await this.teamsModel.findByPk(id);
     
     if (team === null) {
-      const error = new Error();
-      error.type = EnumError.notFound;
+      const error = new BasedError('', EnumError.notFound);
       throw error;
     }
 
     if (!TeamsService.assertIsTeam(team)) {
-      const error = new Error();
-      error.type = EnumError.badImplementation;
+      const error = new BasedError(
+        '',
+        EnumError.badImplementation
+      );
+      
       throw error;
     }
 
