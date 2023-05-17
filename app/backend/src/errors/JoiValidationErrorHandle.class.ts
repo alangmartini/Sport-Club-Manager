@@ -5,37 +5,25 @@ import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interf
 import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
 import EnumValidation from '../enums/validation.enum';
 import BasedError from './BasedError.class';
+import { StatusCodes } from 'http-status-codes';
 
-// Arrumar incongruência no parametro do constrcutor
-// pois se ele entrar no JoiValidationErrorHandle, com certeza é do tipo ValidationError
-// mas isso deve estar sincronizado com o BoomErrorHandle.
-
-
-// Commitar mudanças
-
-class JoiValidationErrorHandle implements IErrorHandle {
+class JoiValidationErrorHandle
+  implements IErrorHandle
+{
   statusCode!: TStatusCode;
   output!: IExpressErrorOutput;
 
-  private _validationError: Joi.ValidationError;
-
-  constructor(error: BasedError)  {
-    switch(error.type) {
-      case EnumValidation.EMAIL_AND_PASSWORD:
-        const emailorPassword = error.details[0].path;
-
-
+  constructor(error: BasedError) {
+    switch (error.type) {
+      case EnumValidation.EMAIL_INVALID ||
+        EnumValidation.PASSWORD_INVALID:
+        
+        this.statusCode = StatusCodes.UNAUTHORIZED;
+        this.output = {
+          message: 'Invalid email or password',
+        };
         break;
     }
-
-    this.updateStatusAndOutput(this._validationError);
-  }
-
-  updateStatusAndOutput(validationError: Joi.ValidationError) {
-    this.statusCode = boomError.output
-      .statusCode;
-
-    this.output = boomError.output.payload;
   }
 }
 

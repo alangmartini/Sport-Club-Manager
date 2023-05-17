@@ -7,15 +7,15 @@ import ErrorClient from '../errors/ErrorClient.class';
 import IErrorClient from '../interfaces/errors/IErrorClient.interface';
 import TStatusCode from '../types/TStatusCode.type';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
+import BasedError from '../errors/BasedError.class';
 
 function errorMiddleware(
-  error: Error,
+  error: BasedError,
   req: Request,
   res: Response,
   _next: NextFunction,
 ) {
-  const errorClient: IErrorClient =
-  new ErrorClient(error);
+  const errorClient: IErrorClient = new ErrorClient(error);
 
   const statusCode: TStatusCode =
     errorClient.getStatus();

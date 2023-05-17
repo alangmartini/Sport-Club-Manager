@@ -5,11 +5,12 @@ import IValidationMiddleware from '../../interfaces/validation/IValidationMiddle
 import ValidationClient from '../../validation/ValidationClient.class';
 import TRuleSet from '../../types/TRuleSet.type';
 import TValidateResult from '../../types/TValidateResult.type';
+import BasedError from '../../errors/BasedError.class';
 
 
 class validateEmailAndPassword implements IValidationMiddleware {
   validationClient: ValidationClient<IUserBody>;
-  ruleSet: TRuleSet = EnumValidation.EMAIL_AND_PASSWORD;
+  ruleSet: TRuleSet = [EnumValidation.EMAIL_INVALID, EnumValidation.PASSWORD_INVALID];
 
   constructor() {
     this.middleware = this.middleware.bind(this);
@@ -19,12 +20,12 @@ class validateEmailAndPassword implements IValidationMiddleware {
 
   middleware(req: Request, res: Response, next: NextFunction) {
     const user: IUserBody = req.body;
+    console.log('user is:', user);
 
     try {
       const result: TValidateResult = this.validationClient.validate(user);
 
-      if (result instanceof Error) {
-        result.name = this.ruleSet;
+      if (result instanceof BasedError) {
         throw result;
       }
 
