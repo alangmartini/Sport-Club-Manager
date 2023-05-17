@@ -13,7 +13,7 @@ export default class UserService {
     
     if (user === null) {
       const error = new Error();
-      error.name = EnumError.notFound;
+      error.type = EnumError.notFound;
       throw error;
     }
 
@@ -21,7 +21,7 @@ export default class UserService {
 
     if (!match) {
       const error = new Error;
-      error.name = EnumError.unauthorized;
+      error.type = EnumError.unauthorized;
       throw error;
     }
 

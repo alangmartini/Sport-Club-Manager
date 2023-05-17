@@ -5,11 +5,13 @@ import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interf
 import BoomErrorHandle from './BoomErrorHandle.class';
 import JoiValidationErrorHandle from './JoiValidationErrorHandle.class';
 import EnumError from '../enums/error.enum';
+import EnumValidation from '../enums/validation.enum';
+import BasedError from './BasedError.class';
 
 class ErrorClient implements IErrorClient {
   errorHandle: IErrorHandle;
 
-  constructor(error: Error) {
+  constructor(error: BasedError) {
     /*
       Errors handlers are responsible for formating
       the errors from diferents sources.
@@ -17,21 +19,19 @@ class ErrorClient implements IErrorClient {
       since you just need to create a new Handle and insert here.
     */
 
-    if (error.name in EnumError) {
+    /*
+      Errors come here as normal Errors and then
+      mapped to Boom errors.
+    */ 
+    if (error.type in EnumError) {
       this.errorHandle = new BoomErrorHandle(error);
       return;
     }
 
     /*
-      Since in validations errors the package
-      itself is responsible for verifications, JOI
-      errors are throw in Validation Middlewares objects.
-
-      Thus this ErrorHandle, beside the original purpose of
-      providing a easy way for modifications, also maps
-      JOI (or other package) errors to proper messages to be shown.
+      In Validations usually the validator ( Joi in this case ),
     */
-    if (error.name === 'ValidationError') {
+    if (error.type in EnumValidation) {
       this.errorHandle = new JoiValidationErrorHandle(error);
       return;
     }

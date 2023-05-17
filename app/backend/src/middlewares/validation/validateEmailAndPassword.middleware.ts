@@ -24,6 +24,7 @@ class validateEmailAndPassword implements IValidationMiddleware {
       const result: TValidateResult = this.validationClient.validate(user);
 
       if (result instanceof Error) {
+        result.name = this.ruleSet;
         throw result;
       }
 

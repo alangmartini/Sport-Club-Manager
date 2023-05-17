@@ -3,6 +3,7 @@ import EnumError from '../enums/error.enum';
 import TStatusCode from '../types/TStatusCode.type';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
 import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
+import BasedError from './BasedError.class';
 
 class BoomErrorHandle implements IErrorHandle {
   statusCode!: TStatusCode;
@@ -10,8 +11,8 @@ class BoomErrorHandle implements IErrorHandle {
 
   private _boomError: Boom.Boom;
 
-  constructor(error: Error)  {
-    switch(error.name) {
+  constructor(error: BasedError)  {
+    switch(error.type) {
       case EnumError.badImplementation:
         this._boomError = Boom.badImplementation();
         break;

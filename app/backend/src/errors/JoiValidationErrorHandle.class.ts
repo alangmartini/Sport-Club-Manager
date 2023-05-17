@@ -4,6 +4,7 @@ import TStatusCode from '../types/TStatusCode.type';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
 import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
 import EnumValidation from '../enums/validation.enum';
+import BasedError from './BasedError.class';
 
 // Arrumar incongruência no parametro do constrcutor
 // pois se ele entrar no JoiValidationErrorHandle, com certeza é do tipo ValidationError
@@ -18,8 +19,8 @@ class JoiValidationErrorHandle implements IErrorHandle {
 
   private _validationError: Joi.ValidationError;
 
-  constructor(error: Joi.ValidationError)  {
-    switch(error.name) {
+  constructor(error: BasedError)  {
+    switch(error.type) {
       case EnumValidation.EMAIL_AND_PASSWORD:
         const emailorPassword = error.details[0].path;
 

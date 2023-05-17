@@ -10,7 +10,7 @@ class JOIProvider<T> implements IValidationProvider{
 
   constructor(ruleSet: EnumValidation) {
     switch(ruleSet) {
-      case EnumValidation.EMAIL_AND_PASSWORD:
+      case EnumValidation.EMAIL_INVALID || EnumValidation.PASSWORD_INVALID:
         this._schema = new schema.schemaEmailAndPassword();
         break;
     }
@@ -19,7 +19,10 @@ class JOIProvider<T> implements IValidationProvider{
   validate(dataToValidate: T): TValidateResult  {
     const result: JOI.ValidationResult = this._schema.validate(dataToValidate);
 
-    if (result.error) { 
+    // Here is were the error will be created. It must have a 
+    
+    if (result.error) {
+
       return result.error;
     }
 

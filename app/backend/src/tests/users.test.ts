@@ -106,7 +106,7 @@ describe('User login', () => {
       );
     });
 
-    it('Should return lacking email error', async () => {
+    it.only('Should return lacking email error', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')

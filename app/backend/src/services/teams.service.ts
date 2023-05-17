@@ -2,6 +2,7 @@ import { Boom } from '@hapi/boom';
 import ITeam from '../interfaces/teams/teams.interface';
 import SequelizeTeam from '../database/models/teams.model';
 import EnumError from '../enums/error.enum';
+import BasedError from '../errors/BasedError.class';
 
 export default class TeamsService {
   private teamsModel = SequelizeTeam;
@@ -19,8 +20,10 @@ export default class TeamsService {
       || !allTeams.length
     ) {
       // Controller will forward error to middleware.
-      const error = new Error('Internal Error');
-      error.name = EnumError.badImplementation;
+      const error = new BasedError(
+        'Internal Error',
+        EnumError.badImplementation
+      );
       throw new Error('Internal Error');
     }
 
@@ -32,13 +35,13 @@ export default class TeamsService {
     
     if (team === null) {
       const error = new Error();
-      error.name = EnumError.notFound;
+      error.type = EnumError.notFound;
       throw error;
     }
 
     if (!TeamsService.assertIsTeam(team)) {
       const error = new Error();
-      error.name = EnumError.badImplementation;
+      error.type = EnumError.badImplementation;
       throw error;
     }
 

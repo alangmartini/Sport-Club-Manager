@@ -1,5 +1,10 @@
+interface RuleSet {
+
+}
+
 enum EnumValidation {
-  EMAIL_AND_PASSWORD = 'EMAIL_AND_PASSWORD',
+  emailInvalid = 'EMAIL_INVALID',
+  passwordInvalid = 'PASSWORD_INVALID'
 }
 
 export default EnumValidation;
