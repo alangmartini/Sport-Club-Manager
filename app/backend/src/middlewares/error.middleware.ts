@@ -3,9 +3,9 @@ import {
   Request,
   Response,
 } from 'express';
-import ErrorClient from '../errors';
+import ErrorClient from '../errors/ErrorClient.class';
 import IErrorClient from '../interfaces/errors/IErrorClient.interface';
-import TStatusCode from '../types/IStatusCode.type';
+import TStatusCode from '../types/TStatusCode.type';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
 
 function errorMiddleware(

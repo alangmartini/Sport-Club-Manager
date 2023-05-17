@@ -1,4 +1,4 @@
-import TStatusCode from '../../types/IStatusCode.type';
+import TStatusCode from '../../types/TStatusCode.type';
 import IErrorHandle from './IErrorHandle.interface';
 import IExpressErrorOutput from './IExpressErrorOutput.interface';
 
