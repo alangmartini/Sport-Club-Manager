@@ -13,13 +13,13 @@ class BoomErrorHandle implements IErrorHandle {
 
   constructor(error: BasedError)  {
     switch(error.type) {
-      case EnumError.badImplementation:
+      case EnumError.BAD_IMPLEMENTATION:
         this._boomError = Boom.badImplementation();
         break;
-      case EnumError.notFound:
+      case EnumError.NOT_FOUND:
         this._boomError = Boom.notFound();
         break;
-      case EnumError.unauthorized:
+      case EnumError.UNAUTHORIZED:
         this._boomError = Boom.unauthorized();
         break;
       default:
