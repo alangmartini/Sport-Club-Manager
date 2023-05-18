@@ -37,7 +37,6 @@ class JOIProvider<T>
 
     const result: JOI.ValidationResult =
     this._schema.validate(dataToValidate);
-    console.log('result is:', result);
     
     if (result.error) {
       const type = this.typeOfError;
