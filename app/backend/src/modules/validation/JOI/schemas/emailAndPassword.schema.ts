@@ -1,6 +1,6 @@
 import * as JOI from 'joi';
-import IJOISchema from '../../../interfaces/validation/Joi/IJOISchema.interface';
-import IUserBody  from '../../../interfaces/users/IUserBody.interface';
+import IJOISchema from '../../../../interfaces/validation/Joi/IJOISchema.interface';
+import IUserBody  from '../../../../interfaces/users/IUserBody.interface';
 
 const rules = JOI.object({
   email: JOI.string().email().required(),

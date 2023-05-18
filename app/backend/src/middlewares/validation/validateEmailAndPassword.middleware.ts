@@ -6,7 +6,7 @@ import {
 import EnumValidation from '../../enums/validation.enum';
 import IUserBody from '../../interfaces/users/IUserBody.interface';
 import IValidationMiddleware from '../../interfaces/validation/IValidationMiddleware.interface';
-import ValidationClient from '../../validation/ValidationClient.client';
+import ValidationClient from '../../modules/validation/ValidationClient.client';
 import TRuleSet from '../../types/TRuleSet.type';
 import TValidateResult from '../../types/TValidateResult.type';
 import BasedError from '../../errors/BasedError.class';

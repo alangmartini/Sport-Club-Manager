@@ -4,7 +4,7 @@ import IUserBody from '../../interfaces/users/IUserBody.interface';
 import TValidateResult from '../../types/TValidateResult.type';
 import BasedError from '../../errors/BasedError.class';
 import IExistenceMiddleware from '../../interfaces/existence/IExistenceMiddleware.interface';
-import ExistenceClient from '../../existence/ExistenceClient.client';
+import ExistenceClient from '../../modules/existence/ExistenceClient.client';
 
 class existenceAssertEmailAndPassword implements IExistenceMiddleware<IUserBody> {
   existenceClient: ExistenceClient<IUserBody>;
@@ -24,6 +24,7 @@ class existenceAssertEmailAndPassword implements IExistenceMiddleware<IUserBody>
       const result: TValidateResult = this.existenceClient.assertExist(user);
 
       if (result instanceof BasedError) {
+        console.log('aqui')
         throw result;
       }
 

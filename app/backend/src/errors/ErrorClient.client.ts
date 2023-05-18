@@ -3,13 +3,13 @@ import IErrorClient from '../interfaces/errors/IErrorClient.interface';
 import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
 import BoomErrorHandle from './BoomErrorHandle.handle';
-import JoiValidationErrorHandle from './JoiValidationErrorHandle.handle';
+import JoiValidationErrorHandle from './validation/JoiValidationErrorHandle.handle';
 import EnumErrorHTTP from '../enums/HTTPerror.enum';
 import EnumValidation from '../enums/validation.enum';
 import BasedError from './BasedError.class';
 import EnumErrorValidation from '../enums/ErrorValidation.enum';
 import EnumExistenceError from '../enums/ExistenceError.enum';
-import ExistenceErrorHandle from './ExistenceErrorHandle.handle';
+import ExistenceErrorHandle from './existence/ExistenceErrorHandle.handle';
 
 class ErrorClient implements IErrorClient {
   errorHandle: IErrorHandle;
@@ -31,9 +31,6 @@ class ErrorClient implements IErrorClient {
       return;
     }
 
-    /*
-      In Validations usually the validator ( Joi in this case ),
-    */
     if (error.type in EnumErrorValidation) {
       this.errorHandle = new JoiValidationErrorHandle(error);
       return;
@@ -41,6 +38,7 @@ class ErrorClient implements IErrorClient {
 
     if (error.type in EnumExistenceError) {
       this.errorHandle = new ExistenceErrorHandle(error);
+      return;
     }
 
     this.errorHandle = new BoomErrorHandle(error);

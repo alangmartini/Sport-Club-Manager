@@ -1,12 +1,12 @@
 import * as JOI from 'joi';
 import schema from './schemas';
-import IJOISchema from '../../interfaces/validation/Joi/IJOISchema.interface';
-import EnumValidation from '../../enums/validation.enum';
-import IValidationProvider from '../../interfaces/validation/IValidationProvider.interface';
-import TValidateResult from '../../types/TValidateResult.type';
-import TRuleSet from '../../types/TRuleSet.type';
-import BasedError from '../../errors/BasedError.class';
-import EnumErrorHTTP from '../../enums/HTTPerror.enum';
+import IJOISchema from '../../../interfaces/validation/Joi/IJOISchema.interface';
+import EnumValidation from '../../../enums/validation.enum';
+import IValidationProvider from '../../../interfaces/validation/IValidationProvider.interface';
+import TValidateResult from '../../../types/TValidateResult.type';
+import TRuleSet from '../../../types/TRuleSet.type';
+import BasedError from '../../../errors/BasedError.class';
+import EnumErrorHTTP from '../../../enums/HTTPerror.enum';
 
 class JOIProvider<T>
   implements IValidationProvider

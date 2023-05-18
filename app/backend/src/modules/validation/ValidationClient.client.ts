@@ -1,6 +1,6 @@
-import IValidationProvider from '../interfaces/validation/IValidationProvider.interface';
-import TRuleSet from '../types/TRuleSet.type';
-import TValidateResult from '../types/TValidateResult.type';
+import IValidationProvider from '../../interfaces/validation/IValidationProvider.interface';
+import TRuleSet from '../../types/TRuleSet.type';
+import TValidateResult from '../../types/TValidateResult.type';
 import JOIProvider from './JOI/JOIProvider.provider';
 
 /*

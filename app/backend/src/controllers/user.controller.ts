@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import UserService from '../services/user.service'
 import * as jwt from 'jsonwebtoken'
 import { StatusCodes } from 'http-status-codes';
-import TokenClient from '../auth/TokenClient.client';
+import TokenClient from '../modules/auth/TokenClient.client';
 
 export default class UserController {
   private userService: UserService;

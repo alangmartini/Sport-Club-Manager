@@ -23,10 +23,6 @@ function errorMiddleware(
   const output: IExpressErrorOutput =
     errorClient.getOutput();
 
-  if (output.message === 'Unauthorized') {
-    return res.status(statusCode).json({ message: 'Invalid email or password' });
-  }
-
   res.status(statusCode).json(output);
 }
 

@@ -1,7 +1,7 @@
-import TValidateResult from '../types/TValidateResult.type';
-import BasedError from '../errors/BasedError.class';
-import IExistenceProvider from '../interfaces/existence/IExistenceProvider.interface';
-import EnumExistenceError from '../enums/ExistenceError.enum';
+import TValidateResult from '../../types/TValidateResult.type';
+import BasedError from '../../errors/BasedError.class';
+import IExistenceProvider from '../../interfaces/existence/IExistenceProvider.interface';
+import EnumExistenceError from '../../enums/ExistenceError.enum';
 
 class ExistenceProvider<T>
   implements IExistenceProvider<T>
@@ -31,6 +31,7 @@ class ExistenceProvider<T>
     return true;
   }
 
+  // Verify if both objects have same props
   deepKeyEqual(obj1: any, obj2: any): true | Error {
     const keys1 = Object.keys(obj1).sort();
     const keys2 = Object.keys(obj2).sort();

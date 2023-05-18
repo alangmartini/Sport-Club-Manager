@@ -1,9 +1,9 @@
-import TStatusCode from '../types/TStatusCode.type';
-import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
-import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
-import BasedError from './BasedError.class';
+import TStatusCode from '../../types/TStatusCode.type';
+import IExpressErrorOutput from '../../interfaces/errors/IExpressErrorOutput.interface';
+import IErrorHandle from '../../interfaces/errors/IErrorHandle.interface';
+import BasedError from '../BasedError.class';
 import { StatusCodes } from 'http-status-codes';
-import EnumExistenceError from '../enums/ExistenceError.enum';
+import EnumExistenceError from '../../enums/ExistenceError.enum';
 
 class ExistenceErrorHandle
   implements IErrorHandle
@@ -14,7 +14,7 @@ class ExistenceErrorHandle
   constructor(error: BasedError) {
     switch (error.type) {
       case EnumExistenceError.EMAIL_AND_PASSWORD:
-        this.statusCode = StatusCodes.UNAUTHORIZED;
+        this.statusCode = StatusCodes.BAD_REQUEST;
         this.output = {
           message: 'All fields must be filled',
         };

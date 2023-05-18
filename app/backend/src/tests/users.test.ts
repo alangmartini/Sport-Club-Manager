@@ -19,7 +19,7 @@ import usersMock from './mocks/users/users.mock';
 
 // Class
 import Users from '../database/models/users.model';
-import HashClient from '../auth/HashClient.client';
+import HashClient from '../modules/auth/HashClient.client';
 
 
 chai.use(chaiHttp);
@@ -46,7 +46,7 @@ describe('User login', () => {
       } as IUser);
     });
 
-    it.only('Should return a token', async () => {
+    it('Should return a token', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
