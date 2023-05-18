@@ -12,19 +12,19 @@ class Matches extends Model {
 
 Matches.init({
   homeTeamId: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   homeTeamGoals: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   awayTeamId: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   awayTeamGoals: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   inProgress: {
@@ -37,16 +37,6 @@ Matches.init({
   modelName: 'Matches',
   tableName: 'matches',
   timestamps: false,
-});
-
-Matches.belongsTo(Teams, {
-  foreignKey: 'id',
-  as: 'homeTeam',
-});
-
-Matches.belongsTo(Teams, {
-  foreignKey: 'id',
-  as: 'awayTeam',
 });
 
 Teams.hasMany(Matches, {
