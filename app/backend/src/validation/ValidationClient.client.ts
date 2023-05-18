@@ -3,6 +3,7 @@ import EnumValidation from '../enums/validation.enum';
 import IValidationProvider from '../interfaces/validation/IValidationProvider.interface';
 import TRuleSet from '../types/TRuleSet.type';
 import TValidateResult from '../types/TValidateResult.type';
+import ExistenceAssertionProvider from './ExistenceAssertion/ExistenceAssertionProvider.provider';
 import JOIProvider from './JOI/JOIProvider.provider';
 
 /*
@@ -20,8 +21,7 @@ class validationClient<T> {
       return
     }
 
-    this.validationProvider = 
-    
+    this.validationProvider = new ExistenceAssertionProvider(ruleSet, typeOfError);
   }
 
   validate(dataToValidate: T): TValidateResult {
