@@ -8,6 +8,8 @@ import EnumErrorHTTP from '../enums/HTTPerror.enum';
 import EnumValidation from '../enums/validation.enum';
 import BasedError from './BasedError.class';
 import EnumErrorValidation from '../enums/ErrorValidation.enum';
+import EnumExistenceError from '../enums/ExistenceError.enum';
+import ExistenceErrorHandle from './ExistenceErrorHandle.handle';
 
 class ErrorClient implements IErrorClient {
   errorHandle: IErrorHandle;
@@ -35,6 +37,10 @@ class ErrorClient implements IErrorClient {
     if (error.type in EnumErrorValidation) {
       this.errorHandle = new JoiValidationErrorHandle(error);
       return;
+    }
+
+    if (error.type in EnumExistenceError) {
+      this.errorHandle = new ExistenceErrorHandle(error);
     }
 
     this.errorHandle = new BoomErrorHandle(error);

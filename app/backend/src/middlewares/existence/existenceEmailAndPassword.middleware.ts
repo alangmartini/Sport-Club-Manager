@@ -9,7 +9,7 @@ import ExistenceClient from '../../existence/ExistenceClient.client';
 class existenceAssertEmailAndPassword implements IExistenceMiddleware<IUserBody> {
   existenceClient: ExistenceClient<IUserBody>;
   object = { email: '', password: '' };
-  typeOfError: string = EnumExistenceError.EMAIL_AND_PASSWORD;
+  typeOfError = EnumExistenceError.EMAIL_AND_PASSWORD;
 
   constructor() {
     this.middleware = this.middleware.bind(this);

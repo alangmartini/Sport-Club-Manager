@@ -4,7 +4,7 @@ import IExistenceProvider from './IExistenceProvider.interface';
 interface IExistenceClient<T> {
   existenceProvider: IExistenceProvider<T>;
 
-  assertExist(): TValidateResult;
+  assertExist(dataToAssert: T): TValidateResult;
 };
 
 export default IExistenceClient;

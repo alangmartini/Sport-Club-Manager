@@ -5,7 +5,7 @@ interface IExistenceProvider<T> {
   object: T;
   typeOfError: EnumExistenceError;
 
-  assertExist(): TValidateResult;
+  assertExist(dataToAssert: T): TValidateResult;
 }
 
 export default IExistenceProvider;

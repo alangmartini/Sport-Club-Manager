@@ -46,7 +46,7 @@ describe('User login', () => {
       } as IUser);
     });
 
-    it('Should return a token', async () => {
+    it.only('Should return a token', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -125,7 +125,7 @@ describe('User login', () => {
       );
     });
 
-    it.onlya('Should return lacking password error', async () => {
+    it('Should return lacking password error', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
