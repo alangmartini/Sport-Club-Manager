@@ -1,6 +1,5 @@
-const EnumErrorValidation = {
-  emailOrPasswordInvalid: 'EMAIL_OR_PASSWORD_INVALID',
-  noEmailOrNoPassword: 'NOEMAIL_OR_NOPASSWORD',
-};
+enum EnumErrorValidation {
+  EMAIL_OR_PASSWORD_INVALID = 'EMAIL_OR_PASSWORD_INVALID',
+}
 
 export default EnumErrorValidation;

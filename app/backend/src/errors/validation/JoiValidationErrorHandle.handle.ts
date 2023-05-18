@@ -12,7 +12,7 @@ implements IErrorHandle {
 
   constructor(error: BasedError) {
     switch (error.type) {
-      case EnumErrorValidation.emailOrPasswordInvalid:
+      case EnumErrorValidation.EMAIL_OR_PASSWORD_INVALID:
         this.statusCode = StatusCodes.UNAUTHORIZED;
         this.output = {
           message: 'Invalid email or password',

@@ -19,7 +19,7 @@ implements IValidationMiddleware {
     .EMAIL_AND_PASSWORD;
 
   typeOfError: string = EnumErrorValidation
-    .emailOrPasswordInvalid;
+    .EMAIL_OR_PASSWORD_INVALID;
 
   constructor() {
     this.middleware = this.middleware.bind(this);

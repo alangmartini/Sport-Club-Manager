@@ -66,7 +66,7 @@ describe('User login', () => {
   });
 
   describe('Unsucceful returns', function () {
-    it('Should return wrong password error', async () => {
+    it.only('When wrong password, should return Invalid email or password', async () => {
       sinon.stub(bcrypt, 'compare').resolves(false);
   
       sinon.stub(Users, 'findOne').resolves({
@@ -90,7 +90,7 @@ describe('User login', () => {
       );
     });
 
-    it('Should return not found error', async () => {
+    it('When account with email not found, should return Invalid email or password', async () => {
       sinon.stub(Users, 'findOne').resolves(null);
 
       chaiHttpResponse = await chai
@@ -102,14 +102,14 @@ describe('User login', () => {
         });
 
       expect(chaiHttpResponse.body).to.deep.equal(
-        errorsMock.notFoundError,
+        authErrors.authInvalidEmailOrPass,
       );
       expect(chaiHttpResponse.status).to.equal(
-        StatusCodes.NOT_FOUND,
+        StatusCodes.UNAUTHORIZED,
       );
     });
 
-    it('Should return lacking email error', async () => {
+    it('When no email in body, should return All fields must be filled', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -125,7 +125,7 @@ describe('User login', () => {
       );
     });
 
-    it('Should return lacking password error', async () => {
+    it('When no password in body, should return All fields must be filled', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -139,7 +139,7 @@ describe('User login', () => {
       );
     });
 
-    it('Should return invalid email error', async () => {
+    it('When invalid email, should return All fields must be filled', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -156,7 +156,7 @@ describe('User login', () => {
       );
     });
 
-    it('Should return invalid password error', async () => {
+    it('When invalid password in body, should return All fields must be filled', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')

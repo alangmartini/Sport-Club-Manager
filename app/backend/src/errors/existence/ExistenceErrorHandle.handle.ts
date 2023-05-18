@@ -12,7 +12,7 @@ implements IErrorHandle {
 
   constructor(error: BasedError) {
     switch (error.type) {
-      case EnumExistenceError.EMAIL_AND_PASSWORD:
+      case EnumExistenceError.NO_EMAIL_AND_PASSWORD:
         this.statusCode = StatusCodes.BAD_REQUEST;
         this.output = {
           message: 'All fields must be filled',
