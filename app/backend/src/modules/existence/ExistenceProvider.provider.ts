@@ -19,7 +19,6 @@ implements IExistenceProvider<T> {
   assertExist(dataToAssert: T): TValidateResult {
     const hasAllKeys = this.deepKeyEqual(this.object, dataToAssert);
     const isNonEmpty = this.verifyNoEmptyFields(dataToAssert);
-    console.log('oi')
     if (
       hasAllKeys instanceof Error
       || isNonEmpty instanceof Error
