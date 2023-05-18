@@ -4,7 +4,7 @@ import IUserBody  from '../../../interfaces/users/IUserBody.interface';
 
 const rules = JOI.object({
   email: JOI.string().email().required(),
-  password: JOI.string().min(7)
+  password: JOI.string().min(7).required()
 }).required();
 
 class schemaEmailAndPassword implements IJOISchema {
