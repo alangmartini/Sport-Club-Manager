@@ -1,11 +1,12 @@
 import * as Joi from 'joi';
-import EnumError from '../enums/error.enum';
+import EnumErrorHTTP from '../enums/HTTPerror.enum';
 import TStatusCode from '../types/TStatusCode.type';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
 import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
 import EnumValidation from '../enums/validation.enum';
 import BasedError from './BasedError.class';
 import { StatusCodes } from 'http-status-codes';
+import EnumErrorValidation from '../enums/ValidationError.enum';
 
 class JoiValidationErrorHandle
   implements IErrorHandle
@@ -15,13 +16,19 @@ class JoiValidationErrorHandle
 
   constructor(error: BasedError) {
     switch (error.type) {
-      case EnumValidation.EMAIL_INVALID ||
-        EnumValidation.PASSWORD_INVALID:
-        
+      case EnumErrorValidation.EMAIL_OR_PASSWORD_INVALID:
         this.statusCode = StatusCodes.UNAUTHORIZED;
         this.output = {
           message: 'Invalid email or password',
         };
+
+        break;
+      case EnumErrorValidation.NOEMAIL_OR_NOPASSWORD:
+        this.statusCode = StatusCodes.UNAUTHORIZED,
+        this.output = {
+          message: "All fields must be filled"
+        };
+
         break;
     }
   }

@@ -1,6 +1,7 @@
 const EnumValidation = {
-  EMAIL_INVALID: 'EMAIL_INVALID',
-  PASSWORD_INVALID: 'PASSWORD_INVALID'
+  EMAIL_AND_PASSWORD: 'EMAIL_AND_PASSWORD',
+  EMAIL: 'EMAIL',
+  PASSWORD: 'PASSWORD'
 }
 
 export default EnumValidation;

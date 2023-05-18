@@ -1,3 +1,4 @@
+import EnumTypeOfValidation from '../enums/TypeOfValidation.enum';
 import EnumValidation from '../enums/validation.enum';
 import IValidationProvider from '../interfaces/validation/IValidationProvider.interface';
 import TRuleSet from '../types/TRuleSet.type';
@@ -13,8 +14,14 @@ import JOIProvider from './JOI/JOIProvider.provider';
 class validationClient<T> {
   validationProvider: IValidationProvider;
 
-  constructor (ruleSet: TRuleSet) {
-    this.validationProvider = new JOIProvider(ruleSet);
+  constructor (ruleSet: TRuleSet, typeOfError: string, typeOfValidation: string) {
+    if (typeOfValidation === EnumTypeOfValidation.INVALIDATION) {
+      this.validationProvider = new JOIProvider(ruleSet, typeOfError);
+      return
+    }
+
+    this.validationProvider = 
+    
   }
 
   validate(dataToValidate: T): TValidateResult {

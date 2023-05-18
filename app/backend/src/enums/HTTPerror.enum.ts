@@ -1,7 +1,7 @@
-const EnumError = {
+const EnumErrorHTTP = {
     BAD_IMPLEMENTATION: "BAD_IMPLEMENTATION",
     NOT_FOUND: 'NOTFOUND',
     UNAUTHORIZED: 'UNAUTHORIZED'
 }
 
-export default EnumError;
+export default EnumErrorHTTP;

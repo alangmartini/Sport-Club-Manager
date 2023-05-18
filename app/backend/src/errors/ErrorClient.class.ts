@@ -4,9 +4,10 @@ import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
 import BoomErrorHandle from './BoomErrorHandle.class';
 import JoiValidationErrorHandle from './JoiValidationErrorHandle.class';
-import EnumError from '../enums/error.enum';
+import EnumErrorHTTP from '../enums/HTTPerror.enum';
 import EnumValidation from '../enums/validation.enum';
 import BasedError from './BasedError.class';
+import EnumErrorValidation from '../enums/ValidationError.enum';
 
 class ErrorClient implements IErrorClient {
   errorHandle: IErrorHandle;
@@ -23,7 +24,7 @@ class ErrorClient implements IErrorClient {
       Errors come here as normal Errors and then
       mapped to Boom errors.
     */ 
-    if (error.type in EnumError) {
+    if (error.type in EnumErrorHTTP) {
       this.errorHandle = new BoomErrorHandle(error);
       return;
     }
@@ -31,7 +32,7 @@ class ErrorClient implements IErrorClient {
     /*
       In Validations usually the validator ( Joi in this case ),
     */
-    if (error.type in EnumValidation) {
+    if (error.type in EnumErrorValidation) {
       this.errorHandle = new JoiValidationErrorHandle(error);
       return;
     }

@@ -50,7 +50,10 @@ describe('User login', () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
-        .send(usersMock.USER);
+        .send({
+          email: usersMock.VALID_EMAIL,
+          password: usersMock.VALID_PASSWORD
+        });
 
         expect(
           'token' in chaiHttpResponse.body,
@@ -122,7 +125,7 @@ describe('User login', () => {
       );
     });
 
-    it('Should return lacking password error', async () => {
+    it.only('Should return lacking password error', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')

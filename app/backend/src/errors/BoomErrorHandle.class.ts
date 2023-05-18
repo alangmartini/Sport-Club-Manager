@@ -1,5 +1,5 @@
 import * as Boom from '@hapi/boom';
-import EnumError from '../enums/error.enum';
+import EnumErrorHTTP from '../enums/HTTPerror.enum';
 import TStatusCode from '../types/TStatusCode.type';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
 import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
@@ -13,13 +13,13 @@ class BoomErrorHandle implements IErrorHandle {
 
   constructor(error: BasedError)  {
     switch(error.type) {
-      case EnumError.BAD_IMPLEMENTATION:
+      case EnumErrorHTTP.BAD_IMPLEMENTATION:
         this._boomError = Boom.badImplementation();
         break;
-      case EnumError.NOT_FOUND:
+      case EnumErrorHTTP.NOT_FOUND:
         this._boomError = Boom.notFound();
         break;
-      case EnumError.UNAUTHORIZED:
+      case EnumErrorHTTP.UNAUTHORIZED:
         this._boomError = Boom.unauthorized();
         break;
       default:

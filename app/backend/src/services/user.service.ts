@@ -1,4 +1,4 @@
-import EnumError from '../enums/error.enum';
+import EnumErrorHTTP from '../enums/HTTPerror.enum';
 import Users from '../database/models/users.model';
 import IUser from '../interfaces/users/IUser.interface';
 import * as bcrypt from 'bcryptjs';
@@ -13,7 +13,7 @@ export default class UserService {
     const user = await this.userModel.findOne({ where: { email}});
     
     if (user === null) {
-      const error = new BasedError('', EnumError.NOT_FOUND);
+      const error = new BasedError('', EnumErrorHTTP.NOT_FOUND);
 
       throw error;
     }
@@ -21,7 +21,7 @@ export default class UserService {
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      const error = new BasedError('', EnumError.UNAUTHORIZED);
+      const error = new BasedError('', EnumErrorHTTP.UNAUTHORIZED);
       
       throw error;
     }
