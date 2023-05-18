@@ -19,7 +19,7 @@ import usersMock from './mocks/users/users.mock';
 
 // Class
 import Users from '../database/models/users.model';
-import HashClient from '../auth/HashClient.auth';
+import HashClient from '../auth/HashClient.client';
 
 
 chai.use(chaiHttp);
@@ -125,7 +125,7 @@ describe('User login', () => {
       );
     });
 
-    it.only('Should return lacking password error', async () => {
+    it.onlya('Should return lacking password error', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')

@@ -2,12 +2,12 @@ import * as Boom from '@hapi/boom';
 import IErrorClient from '../interfaces/errors/IErrorClient.interface';
 import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
-import BoomErrorHandle from './BoomErrorHandle.class';
-import JoiValidationErrorHandle from './JoiValidationErrorHandle.class';
+import BoomErrorHandle from './BoomErrorHandle.handle';
+import JoiValidationErrorHandle from './JoiValidationErrorHandle.handle';
 import EnumErrorHTTP from '../enums/HTTPerror.enum';
 import EnumValidation from '../enums/validation.enum';
 import BasedError from './BasedError.class';
-import EnumErrorValidation from '../enums/ValidationError.enum';
+import EnumErrorValidation from '../enums/ErrorValidation.enum';
 
 class ErrorClient implements IErrorClient {
   errorHandle: IErrorHandle;

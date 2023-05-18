@@ -1,6 +1,6 @@
 import ITokenPayload from '../interfaces/auth/ITokenPayload.interface';
 import ITokenProvider from '../interfaces/auth/ITokenProvider.interface';
-import JWTokenProvider from './JWToken.auth';
+import JWTokenProvider from './JWToken.provider';
 
 class TokenClient {
   private _tokenProvider: ITokenProvider;

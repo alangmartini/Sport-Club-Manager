@@ -3,7 +3,7 @@ import {
   Request,
   Response,
 } from 'express';
-import ErrorClient from '../errors/ErrorClient.class';
+import ErrorClient from '../errors/ErrorClient.client';
 import IErrorClient from '../interfaces/errors/IErrorClient.interface';
 import TStatusCode from '../types/TStatusCode.type';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';

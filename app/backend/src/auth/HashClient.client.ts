@@ -1,5 +1,5 @@
 import IHashProvider from '../interfaces/auth/IHashProvider.interface';
-import BCryptProvider from './Bcrypt.auth';
+import BCryptProvider from './Bcrypt.provider';
 
 export default class HashClient {
   private _hashProvider: IHashProvider;

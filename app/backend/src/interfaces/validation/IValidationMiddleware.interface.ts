@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import IValidationClient from './IValidationClient.interface';
 import TRuleSet from '../../types/TRuleSet.type';
-import EnumErrorValidation from '../../enums/ValidationError.enum';
+import EnumErrorValidation from '../../enums/ErrorValidation.enum';
 
 interface IValidationMiddleware {
   validationClient: IValidationClient;
-  validationRequired: string;
   ruleSet: TRuleSet;
   typeOfError: string;
 

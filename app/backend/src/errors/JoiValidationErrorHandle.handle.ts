@@ -6,7 +6,7 @@ import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
 import EnumValidation from '../enums/validation.enum';
 import BasedError from './BasedError.class';
 import { StatusCodes } from 'http-status-codes';
-import EnumErrorValidation from '../enums/ValidationError.enum';
+import EnumErrorValidation from '../enums/ErrorValidation.enum';
 
 class JoiValidationErrorHandle
   implements IErrorHandle
