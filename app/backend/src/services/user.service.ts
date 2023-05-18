@@ -4,25 +4,39 @@ import IUser from '../interfaces/users/IUser.interface';
 import * as bcrypt from 'bcryptjs';
 import IUserBody from '../interfaces/users/IUserBody.interface';
 import BasedError from '../errors/BasedError.class';
+import EnumExistenceError from '../enums/ExistenceError.enum';
 
 export default class UserService {
   private userModel = Users;
 
-  async login(userBody: IUserBody): Promise<IUser> {
+  async login(
+    userBody: IUserBody,
+  ): Promise<IUser> {
     const { email, password } = userBody;
-    const user = await this.userModel.findOne({ where: { email}});
-    
+    const user = await this.userModel.findOne({
+      where: { email },
+    });
+
     if (user === null) {
-      const error = new BasedError('', EnumErrorHTTP.NOT_FOUND);
+      const error = new BasedError(
+        '',
+        EnumExistenceError.EMAIL_AND_PASSWORD,
+      );
 
       throw error;
     }
 
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(
+      password,
+      user.password,
+    );
 
     if (!match) {
-      const error = new BasedError('', EnumErrorHTTP.UNAUTHORIZED);
-      
+      const error = new BasedError(
+        '',
+        EnumExistenceError.EMAIL_AND_PASSWORD,
+      );
+
       throw error;
     }
 
