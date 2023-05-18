@@ -23,13 +23,6 @@ class JoiValidationErrorHandle
         };
 
         break;
-      case EnumErrorValidation.NOEMAIL_OR_NOPASSWORD:
-        this.statusCode = StatusCodes.UNAUTHORIZED,
-        this.output = {
-          message: "All fields must be filled"
-        };
-
-        break;
     }
   }
 }
