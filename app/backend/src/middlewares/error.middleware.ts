@@ -17,11 +17,9 @@ function errorMiddleware(
 ) {
   const errorClient: IErrorClient = new ErrorClient(error);
 
-  const statusCode: TStatusCode =
-    errorClient.getStatus();
+  const statusCode: TStatusCode = errorClient.getStatus();
 
-  const output: IExpressErrorOutput =
-    errorClient.getOutput();
+  const output: IExpressErrorOutput = errorClient.getOutput();
 
   res.status(statusCode).json(output);
 }

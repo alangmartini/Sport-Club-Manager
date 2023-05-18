@@ -1,13 +1,12 @@
+import { StatusCodes } from 'http-status-codes';
 import TStatusCode from '../../types/TStatusCode.type';
 import IExpressErrorOutput from '../../interfaces/errors/IExpressErrorOutput.interface';
 import IErrorHandle from '../../interfaces/errors/IErrorHandle.interface';
 import BasedError from '../BasedError.class';
-import { StatusCodes } from 'http-status-codes';
 import EnumExistenceError from '../../enums/ExistenceError.enum';
 
 class ExistenceErrorHandle
-  implements IErrorHandle
-{
+implements IErrorHandle {
   statusCode!: TStatusCode;
   output!: IExpressErrorOutput;
 
@@ -20,6 +19,13 @@ class ExistenceErrorHandle
         };
 
         break;
+      default:
+        this.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+        this.output = {
+          statusCode: 500,
+          error: 'Internal Server Error',
+          message: 'An internal server error occurred',
+        };
     }
   }
 }

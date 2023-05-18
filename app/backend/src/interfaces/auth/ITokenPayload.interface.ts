@@ -3,4 +3,3 @@ interface ITokenPayload {
 }
 
 export default ITokenPayload;
-

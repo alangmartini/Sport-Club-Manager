@@ -3,9 +3,9 @@ import BCryptProvider from './Bcrypt.provider';
 
 export default class HashClient {
   private _hashProvider: IHashProvider;
-  
+
   constructor() {
-    const hashProvider = new BCryptProvider()
+    const hashProvider = new BCryptProvider();
 
     this._hashProvider = hashProvider;
   }

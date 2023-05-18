@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import UserService from '../services/user.service'
-import * as jwt from 'jsonwebtoken'
 import { StatusCodes } from 'http-status-codes';
+import UserService from '../services/user.service';
 import TokenClient from '../modules/auth/TokenClient.client';
 
 export default class UserController {
@@ -16,7 +15,7 @@ export default class UserController {
   async login(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     const { email, password } = req.body;
 
@@ -27,11 +26,11 @@ export default class UserController {
       const loggedUser = await this.userService.login(user);
 
       const tokenClient = new TokenClient();
-      const payload = { userId: loggedUser.id};
+      const payload = { userId: loggedUser.id };
       const token = tokenClient.generateToken(payload);
 
       res.status(StatusCodes.OK).json({ token });
-    } catch(error) {
+    } catch (error) {
       next(error);
     }
   }

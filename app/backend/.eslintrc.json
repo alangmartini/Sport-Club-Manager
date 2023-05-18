@@ -80,7 +80,7 @@
     ],
     "max-len": [
       "error",
-      50,
+      100,
       {
         "ignoreComments": true
       }
@@ -143,6 +143,6 @@
     ],
     "sonarjs/no-inverted-boolean-check": [
       "error"
-    ],
+    ]
   }
 }

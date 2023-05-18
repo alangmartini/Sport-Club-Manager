@@ -4,8 +4,7 @@ import IExistenceProvider from '../../interfaces/existence/IExistenceProvider.in
 import EnumExistenceError from '../../enums/ExistenceError.enum';
 
 class ExistenceProvider<T>
-  implements IExistenceProvider<T>
-{
+implements IExistenceProvider<T> {
   object: T;
   typeOfError: EnumExistenceError;
 
@@ -36,29 +35,18 @@ class ExistenceProvider<T>
     const keys1 = Object.keys(obj1).sort();
     const keys2 = Object.keys(obj2).sort();
 
-    if (keys1.length !== keys2.length) {
-      return new Error();
-    }
+    if (keys1.length !== keys2.length) return new Error();
 
-    for (let i = 0; i < keys1.length; i++) {
-      if (keys1[i] !== keys2[i]) {
-        return new Error();
-      }
+    for (let i = 0; i < keys1.length; i += 1) {
+      if (keys1[i] !== keys2[i]) return new Error();
 
-      if (
-        typeof obj1[keys1[i]] === 'object'
+      if (typeof obj1[keys1[i]] === 'object'
           && obj1[keys1[i]] !== null
           && typeof obj2[keys2[i]] === 'object'
           && obj2[keys2[i]] !== null
+          && !this.deepKeyEqual(obj1[keys1[i]], obj2[keys2[i]])
       ) {
-        if (
-          !this.deepKeyEqual(
-            obj1[keys1[i]],
-            obj2[keys2[i]],
-          )
-        ) {
-          return new Error();
-        }
+        return new Error();
       }
     }
 

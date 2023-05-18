@@ -5,6 +5,6 @@ interface IExistenceClient<T> {
   existenceProvider: IExistenceProvider<T>;
 
   assertExist(dataToAssert: T): TValidateResult;
-};
+}
 
 export default IExistenceClient;

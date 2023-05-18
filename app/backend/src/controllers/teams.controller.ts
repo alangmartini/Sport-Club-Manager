@@ -6,17 +6,14 @@ import {
 import { StatusCodes } from 'http-status-codes';
 import TeamsService from '../services/teams.service';
 
-// Created here because of 50 char long line limitation.
-const ERROR = StatusCodes.INTERNAL_SERVER_ERROR;
-
 export default class TeamsController {
-  private TeamService;
+  private teamService;
 
   constructor() {
     this.findAll = this.findAll.bind(this);
     this.findById = this.findById.bind(this);
 
-    this.TeamService = new TeamsService();
+    this.teamService = new TeamsService();
   }
 
   async findAll(
@@ -25,8 +22,8 @@ export default class TeamsController {
     next: NextFunction,
   ) {
     try {
-      const teams =
-        await this.TeamService.findAll();
+      const teams = await this.teamService
+        .findAll();
 
       res.status(StatusCodes.OK).json(teams);
     } catch (error) {
@@ -42,7 +39,7 @@ export default class TeamsController {
     const { id } = req.params;
 
     try {
-      const team = await this.TeamService.findById(id);
+      const team = await this.teamService.findById(id);
 
       res.status(StatusCodes.OK).json(team);
     } catch (error) {

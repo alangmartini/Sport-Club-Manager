@@ -13,13 +13,13 @@ import BasedError from '../../errors/BasedError.class';
 import EnumErrorValidation from '../../enums/ErrorValidation.enum';
 
 class validateEmailAndPassword
-  implements IValidationMiddleware
-{
+implements IValidationMiddleware {
   validationClient: ValidationClient<IUserBody>;
-  ruleSet: TRuleSet =
-    EnumValidation.EMAIL_AND_PASSWORD;
-  typeOfError: string =
-    EnumErrorValidation.EMAIL_OR_PASSWORD_INVALID;
+  ruleSet: TRuleSet = EnumValidation
+    .EMAIL_AND_PASSWORD;
+
+  typeOfError: string = EnumErrorValidation
+    .emailOrPasswordInvalid;
 
   constructor() {
     this.middleware = this.middleware.bind(this);
@@ -38,8 +38,7 @@ class validateEmailAndPassword
     const user: IUserBody = req.body;
 
     try {
-      const result: TValidateResult =
-        this.validationClient.validate(user);
+      const result: TValidateResult = this.validationClient.validate(user);
 
       if (result instanceof BasedError) {
         throw result;

@@ -24,7 +24,6 @@ class existenceAssertEmailAndPassword implements IExistenceMiddleware<IUserBody>
       const result: TValidateResult = this.existenceClient.assertExist(user);
 
       if (result instanceof BasedError) {
-        console.log('aqui')
         throw result;
       }
 
@@ -36,4 +35,3 @@ class existenceAssertEmailAndPassword implements IExistenceMiddleware<IUserBody>
 }
 
 export default existenceAssertEmailAndPassword;
- 

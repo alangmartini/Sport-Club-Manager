@@ -1,5 +1,5 @@
-const EnumTypeOfValidation = {
-  INVALIDATION: 'INVALIDATION'
+enum EnumTypeOfValidation {
+  INVALIDATION = 'INVALIDATION',
 }
 
 export default EnumTypeOfValidation;

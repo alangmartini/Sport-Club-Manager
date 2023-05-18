@@ -1,11 +1,9 @@
-import * as Boom from '@hapi/boom';
 import IErrorClient from '../interfaces/errors/IErrorClient.interface';
 import IErrorHandle from '../interfaces/errors/IErrorHandle.interface';
 import IExpressErrorOutput from '../interfaces/errors/IExpressErrorOutput.interface';
 import BoomErrorHandle from './BoomErrorHandle.handle';
 import JoiValidationErrorHandle from './validation/JoiValidationErrorHandle.handle';
 import EnumErrorHTTP from '../enums/HTTPerror.enum';
-import EnumValidation from '../enums/validation.enum';
 import BasedError from './BasedError.class';
 import EnumErrorValidation from '../enums/ErrorValidation.enum';
 import EnumExistenceError from '../enums/ExistenceError.enum';
@@ -25,7 +23,7 @@ class ErrorClient implements IErrorClient {
     /*
       Errors come here as normal Errors and then
       mapped to Boom errors.
-    */ 
+    */
     if (error.type in EnumErrorHTTP) {
       this.errorHandle = new BoomErrorHandle(error);
       return;

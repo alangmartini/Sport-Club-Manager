@@ -13,13 +13,13 @@ import ExistenceProvider from './ExistenceProvider.provider';
 class ExistenceClient<T> implements IExistenceClient<T> {
   existenceProvider: IExistenceProvider<T>;
 
-  constructor (object: T, typeOfError: EnumExistenceError) {
-      this.existenceProvider = new ExistenceProvider<T>(object, typeOfError);
+  constructor(object: T, typeOfError: EnumExistenceError) {
+    this.existenceProvider = new ExistenceProvider<T>(object, typeOfError);
   }
 
   assertExist(dataToAssert: T): TValidateResult {
     return this.existenceProvider.assertExist(dataToAssert);
-  };
+  }
 }
 
 export default ExistenceClient;

@@ -12,13 +12,13 @@ import JOIProvider from './JOI/JOIProvider.provider';
 class validationClient<T> {
   validationProvider: IValidationProvider;
 
-  constructor (ruleSet: TRuleSet, typeOfError: string) {
-      this.validationProvider = new JOIProvider(ruleSet, typeOfError);
+  constructor(ruleSet: TRuleSet, typeOfError: string) {
+    this.validationProvider = new JOIProvider(ruleSet, typeOfError);
   }
 
   validate(dataToValidate: T): TValidateResult {
     return this.validationProvider.validate(dataToValidate);
-  };
+  }
 }
 
 export default validationClient;

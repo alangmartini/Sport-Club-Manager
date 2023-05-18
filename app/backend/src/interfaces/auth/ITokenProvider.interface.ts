@@ -6,4 +6,3 @@ interface ITokenProvider {
 }
 
 export default ITokenProvider;
-

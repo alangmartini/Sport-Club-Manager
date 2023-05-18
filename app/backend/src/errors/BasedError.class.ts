@@ -1,5 +1,3 @@
-import IBasedError from '../interfaces/errors/IBasedError.interface';
-
 /*
   This error is basically an abstract error. It will
   carry the information so Error Providers of different kinds

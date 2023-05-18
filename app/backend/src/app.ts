@@ -29,7 +29,7 @@ class App {
     this.app.use('/teams', teamRoute);
     this.app.use('/login', loginRoute);
 
-    this.app.use(errorMiddleware)
+    this.app.use(errorMiddleware);
   }
 
   public start(PORT: string | number):void {

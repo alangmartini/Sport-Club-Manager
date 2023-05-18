@@ -3,7 +3,7 @@ import IErrorHandle from './IErrorHandle.interface';
 import IExpressErrorOutput from './IExpressErrorOutput.interface';
 
 interface IErrorClient {
-  errorHandle: IErrorHandle; 
+  errorHandle: IErrorHandle;
   getStatus(): TStatusCode;
   getOutput(): IExpressErrorOutput;
 }
