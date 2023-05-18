@@ -13,7 +13,6 @@ class ErrorClient implements IErrorClient {
   errorHandle: IErrorHandle;
 
   constructor(error: BasedError) {
-    console.log('error client is is:', error.type, error.message);
     /*
       Errors handlers are responsible for formating
       the errors from diferents sources.
@@ -31,19 +30,14 @@ class ErrorClient implements IErrorClient {
     }
 
     if (error.type in EnumErrorValidation) {
-      console.log('oi1');
-
       this.errorHandle = new JoiValidationErrorHandle(error);
       return;
     }
 
     if (error.type in EnumExistenceError) {
-      console.log('oi2');
-
       this.errorHandle = new ExistenceErrorHandle(error);
       return;
     }
-    console.log('oi3');
 
     this.errorHandle = new BoomErrorHandle(error);
   }

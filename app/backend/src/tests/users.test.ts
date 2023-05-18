@@ -13,8 +13,6 @@ import IUser from '../interfaces/users/IUser.interface';
 
 // Mocks
 import authErrors from './mocks/errors/authErrorsMock.mock';
-import errorsMock from './mocks/errors/errorsMock.mock';
-import tokenMock from './mocks/users/token.mock';
 import usersMock from './mocks/users/users.mock';
 
 // Class
@@ -66,7 +64,7 @@ describe('User login', () => {
   });
 
   describe('Unsucceful returns', function () {
-    it.only('When wrong password, should return Invalid email or password', async () => {
+    it('When wrong password, should return Invalid email or password', async () => {
       sinon.stub(bcrypt, 'compare').resolves(false);
   
       sinon.stub(Users, 'findOne').resolves({

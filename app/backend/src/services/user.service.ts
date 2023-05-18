@@ -3,7 +3,6 @@ import Users from '../database/models/users.model';
 import IUser from '../interfaces/users/IUser.interface';
 import IUserBody from '../interfaces/users/IUserBody.interface';
 import BasedError from '../errors/BasedError.class';
-import EnumExistenceError from '../enums/ExistenceError.enum';
 import EnumErrorValidation from '../enums/ErrorValidation.enum';
 
 export default class UserService {
@@ -19,7 +18,7 @@ export default class UserService {
     });
 
     if (user === null) {
-      const error = new BasedError('', EnumExistenceError.NO_EMAIL_AND_PASSWORD);
+      const error = new BasedError('', EnumErrorValidation.EMAIL_OR_PASSWORD_INVALID);
 
       throw error;
     }
