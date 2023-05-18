@@ -137,6 +137,37 @@ describe('User login', () => {
       );
     });
 
+    it('When empty email in body, should return All fields must be filled', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          email: "",
+          password: usersMock.VALID_PASSWORD,
+        });
+
+      expect(chaiHttpResponse.body).to.deep.equal(
+        authErrors.authNoEmailOrPass,
+      );
+      expect(chaiHttpResponse.status).to.equal(
+        StatusCodes.BAD_REQUEST,
+      );
+    });
+
+    it('When empty password, should return All fields must be filled', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send({ email: usersMock.VALID_EMAIL, password: "" });
+
+      expect(chaiHttpResponse.body).to.deep.equal(
+        authErrors.authNoEmailOrPass,
+      );
+      expect(chaiHttpResponse.status).to.equal(
+        StatusCodes.BAD_REQUEST,
+      );
+    });
+
     it('When invalid email, should return All fields must be filled', async () => {
       chaiHttpResponse = await chai
         .request(app)

@@ -17,9 +17,13 @@ implements IExistenceProvider<T> {
   }
 
   assertExist(dataToAssert: T): TValidateResult {
-    const result = this.deepKeyEqual(this.object, dataToAssert);
-
-    if (result instanceof Error) {
+    const hasAllKeys = this.deepKeyEqual(this.object, dataToAssert);
+    const isNonEmpty = this.verifyNoEmptyFields(dataToAssert);
+    console.log('oi')
+    if (
+      hasAllKeys instanceof Error
+      || isNonEmpty instanceof Error
+    ) {
       const type = this.typeOfError;
 
       const error = new BasedError('', type);
@@ -51,6 +55,21 @@ implements IExistenceProvider<T> {
     }
 
     return true;
+  }
+
+  isEmpty(value: any): boolean {
+    if (typeof value === 'object' && value !== null) {
+      return Object.keys(value).some((key) => this.isEmpty(value[key]));
+    }
+    return value === '' || value === undefined || value === null;
+  }
+
+  verifyNoEmptyFields(obj: unknown): true | Error {
+    if (!this.isEmpty(obj)) {
+      return true;
+    }
+
+    return new Error();
   }
 }
 
