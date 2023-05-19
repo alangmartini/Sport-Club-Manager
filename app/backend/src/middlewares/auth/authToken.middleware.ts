@@ -1,28 +1,41 @@
 import { Request, Response, NextFunction } from 'express';
 import TokenClient from '../../modules/auth/TokenClient.client';
-import ITokenPayload from '../../interfaces/modules/auth/ITokenPayload.interface';
+import TTokenVerifcationResult from '../../types/TTokenResult.type';
+import EnumAuthError from '../../enums/AuthError.enum';
+import BasedError from '../../errors/BasedError.class';
 
 class AuthToken {
-  constructor() {}
+  typeOfError = EnumAuthError.TOKEN_INVALID;
+
+  constructor() {
+    this.middleware = this.middleware.bind(this);
+  }
 
   middleware(
     req: Request,
     res: Response,
     next: NextFunction,
   ) {
-    console.log(this);
     const authToken = req.headers.authorization;
 
-    /*
-      This is just for TS lint, since there is a middleware
-      that validates if null, empty or underfined.
-    */
     if (!authToken) return;
     const tokenClient = new TokenClient();
 
-    const isValid: ITokenPayload = tokenClient.verifyToken(authToken);
+    try {
+      const result: TTokenVerifcationResult = tokenClient.verifyToken(authToken);
 
-    
+      if (result instanceof Error) throw new BasedError('', this.typeOfError);
+
+      if (!req.body) {
+        req.body = { user: result };
+      }
+
+      req.body.user = result;
+
+      next();
+    } catch (error) {
+      next(error);
+    }
   }
 }
 

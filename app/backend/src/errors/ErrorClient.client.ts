@@ -8,6 +8,8 @@ import BasedError from './BasedError.class';
 import EnumErrorValidation from '../enums/ErrorValidation.enum';
 import EnumExistenceError from '../enums/ExistenceError.enum';
 import ExistenceErrorHandle from './existence/ExistenceErrorHandle.handle';
+import EnumAuthError from '../enums/AuthError.enum';
+import AuthErrorHandle from './auth/AuthErrorHandle.handle';
 
 class ErrorClient implements IErrorClient {
   errorHandle: IErrorHandle;
@@ -36,6 +38,12 @@ class ErrorClient implements IErrorClient {
 
     if (error.type in EnumExistenceError) {
       this.errorHandle = new ExistenceErrorHandle(error);
+      return;
+    }
+
+    if (error.type in EnumAuthError) {
+      console.log('EnumAuthError is:');
+      this.errorHandle = new AuthErrorHandle(error);
       return;
     }
 

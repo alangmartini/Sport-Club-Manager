@@ -5,6 +5,7 @@ import ValidateEmailAndPassword from
 import ExistenceEmailAndPassword from
   '../middlewares/existence/existenceEmailAndPassword.middleware';
 import ExistenceToken from '../middlewares/existence/existenceToken.middleware';
+import AuthToken from '../middlewares/auth/authToken.middleware';
 
 const loginRoute = express.Router();
 
@@ -13,6 +14,7 @@ const userExistenceAssert = new ExistenceEmailAndPassword();
 const userValidation = new ValidateEmailAndPassword();
 
 const tokenExistenceAssert = new ExistenceToken();
+const tokenAuth = new AuthToken();
 
 loginRoute.post(
   '/',
@@ -24,6 +26,7 @@ loginRoute.post(
 loginRoute.get(
   '/role',
   tokenExistenceAssert.middleware,
+  tokenAuth.middleware,
 );
 
 export default loginRoute;
