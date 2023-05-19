@@ -5,15 +5,15 @@ import {
 } from 'express';
 import EnumValidation from '../../enums/validation.enum';
 import IUserBody from '../../interfaces/users/IUserBody.interface';
-import IValidationMiddleware from '../../interfaces/modules/validation/IValidationMiddleware.interface';
+import IValidationMiddleware
+  from '../../interfaces/modules/validation/IValidationMiddleware.interface';
 import ValidationClient from '../../modules/validation/ValidationClient.client';
 import TRuleSet from '../../types/TRuleSet.type';
 import TValidateResult from '../../types/TValidateResult.type';
 import BasedError from '../../errors/BasedError.class';
 import EnumErrorValidation from '../../enums/ErrorValidation.enum';
 
-class validateEmailAndPassword
-implements IValidationMiddleware {
+class validateEmailAndPassword implements IValidationMiddleware {
   validationClient: ValidationClient<IUserBody>;
   ruleSet: TRuleSet = EnumValidation
     .EMAIL_AND_PASSWORD;

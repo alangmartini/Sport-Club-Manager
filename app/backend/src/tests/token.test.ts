@@ -58,9 +58,13 @@ describe.only('Token autentication', function () {
   let chaiHttpResponse: Response;
 
   describe('Succeful returns', function () {
-    it('After logging and getting a token, should have access normally', async function () {
+    it.only('After logging and getting a token, should have access normally', async function () {
       const tokenObj: IreqResToken = await logIn();
 
+      const usersFindByPkStub = sinon.stub(Users, 'findByPk');
+
+      usersFindByPkStub.resolves(usersMock.USER as IUser);
+    
       // Try a route
       chaiHttpResponse = await chai
         .request(app)

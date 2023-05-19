@@ -27,6 +27,7 @@ loginRoute.get(
   '/role',
   tokenExistenceAssert.middleware,
   tokenAuth.middleware,
+  userController.role,
 );
 
 export default loginRoute;

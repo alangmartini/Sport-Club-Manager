@@ -3,12 +3,14 @@ import { StatusCodes } from 'http-status-codes';
 import UserService from '../services/user.service';
 import TokenClient from '../modules/auth/TokenClient.client';
 import IreqResToken from '../interfaces/requisitionsResponses/token.interface';
+import ITokenPayloadInBody from '../interfaces/users/ITokenPayloadInBody.interface';
 
 export default class UserController {
   private userService: UserService;
 
   constructor() {
     this.login = this.login.bind(this);
+    this.role = this.role.bind(this);
 
     this.userService = new UserService();
   }
@@ -33,6 +35,24 @@ export default class UserController {
       const tokenObj: IreqResToken = { token };
 
       res.status(StatusCodes.OK).json(tokenObj);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async role(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const userInfo = req.body as ITokenPayloadInBody;
+      // If something is wrong, login service will throw an error
+      const user = await this.userService.findUser(userInfo.user.userId);
+
+      res.status(StatusCodes.OK).json({ role: user.role });
+
+      return;
     } catch (error) {
       next(error);
     }

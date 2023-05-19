@@ -22,13 +22,12 @@ class AuthToken {
     const tokenClient = new TokenClient();
 
     try {
-      const result: TTokenVerifcationResult = tokenClient.verifyToken(authToken);
+      const result: TTokenVerifcationResult = tokenClient.verifyToken(authToken
+        .replace('Bearer', '').replace(' ', ''));
 
       if (result instanceof Error) throw new BasedError('', this.typeOfError);
 
-      if (!req.body) {
-        req.body = { user: result };
-      }
+      if (!req.body) req.body = { user: result };
 
       req.body.user = result;
 
