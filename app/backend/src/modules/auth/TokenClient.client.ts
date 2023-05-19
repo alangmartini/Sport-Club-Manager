@@ -1,20 +1,21 @@
+import ITokenClient from '../../interfaces/modules/auth/ITokenClient.interface';
 import ITokenPayload from '../../interfaces/modules/auth/ITokenPayload.interface';
 import ITokenProvider from '../../interfaces/modules/auth/ITokenProvider.interface';
 import JWTokenProvider from './JWToken.provider';
 
-class TokenClient {
-  private _tokenProvider: ITokenProvider;
+class TokenClient implements ITokenClient {
+  tokenProvider: ITokenProvider;
 
   constructor() {
-    this._tokenProvider = new JWTokenProvider();
+    this.tokenProvider = new JWTokenProvider();
   }
 
-  generateToken(payload: ITokenPayload) {
-    return this._tokenProvider.generateToken(payload);
+  generateToken(payload: ITokenPayload): string {
+    return this.tokenProvider.generateToken(payload);
   }
 
-  verifyToken(token: string) {
-    return this._tokenProvider.verifyToken(token);
+  verifyToken(token: string): ITokenPayload {
+    return this.tokenProvider.verifyToken(token);
   }
 }
 

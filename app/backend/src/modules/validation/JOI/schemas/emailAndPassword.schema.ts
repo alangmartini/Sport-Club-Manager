@@ -1,5 +1,5 @@
 import * as JOI from 'joi';
-import IJOISchema from '../../../../interfaces/validation/Joi/IJOISchema.interface';
+import IJOISchema from '../../../../interfaces/modules/validation/Joi/IJOISchema.interface';
 import IUserBody from '../../../../interfaces/users/IUserBody.interface';
 
 const rules = JOI.object({
