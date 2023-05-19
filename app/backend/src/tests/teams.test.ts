@@ -24,17 +24,17 @@ afterEach(()=>{
   sinon.restore();
 })
 
-describe('Teams findAll', () => {
+describe('Teams findAll', function () {
   let chaiHttpResponse: Response;
 
   describe('Successful returns', function () {
-    beforeEach(async () => {
+    beforeEach(async function () {
       sinon
         .stub(Teams, "findAll")
         .resolves(teamsMock.ALL_TEAMS as ITeam[]);
     });
 
-    it('Should return all teams', async () => {
+    it('Should return all teams', async function () {
       chaiHttpResponse = await chai
       .request(app)
       .get('/teams');
@@ -45,13 +45,13 @@ describe('Teams findAll', () => {
   })
   
   describe('Unsucceful returns', function () {
-    beforeEach(() => {
+    beforeEach(function () {
       sinon
         .stub(Teams, 'findAll')
         .resolves([])
     });
 
-    it('Should return internal error', async () => {
+    it('Should return internal error', async function () {
       chaiHttpResponse = await chai
       .request(app)
       .get('/teams');
@@ -62,11 +62,11 @@ describe('Teams findAll', () => {
   })
 });
 
-describe('Teams findById', () => {
+describe('Teams findById', function () {
   let chaiHttpResponse: Response;
 
   describe('Successful returns', function () {
-    it('Should return one team with correct id', async () => {
+    it('Should return one team with correct id', async function () {
       sinon
       .stub(Teams, "findByPk")
       .resolves(teamsMock.ONE_TEAM as ITeam);
@@ -81,7 +81,7 @@ describe('Teams findById', () => {
   })
   
   describe('Unsucceful returns', function () {
-    it('Should return not found', async () => {
+    it('Should return not found', async function () {
       sinon
       .stub(Teams, 'findByPk')
       .resolves(null)
@@ -94,8 +94,8 @@ describe('Teams findById', () => {
       expect(chaiHttpResponse.status).to.equal(errorsMock.notFoundError.statusCode);
     });
 
-    it('Should return internal error', async () => {
-      sinon.stub(Teams, 'findByPk').callsFake(() => { throw new Error() });
+    it('Should return internal error', async function () {
+      sinon.stub(Teams, 'findByPk').callsFake(function () { throw new Error() });
 
       chaiHttpResponse = await chai
       .request(app)

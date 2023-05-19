@@ -107,7 +107,7 @@ describe('User login', () => {
       );
     });
 
-    it('When no email in body, should return All fields must be filled', async () => {
+    it('When no email, should return All fields must be filled', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -123,7 +123,7 @@ describe('User login', () => {
       );
     });
 
-    it('When no password in body, should return All fields must be filled', async () => {
+    it('When no password, should return All fields must be filled', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -137,7 +137,7 @@ describe('User login', () => {
       );
     });
 
-    it('When empty email in body, should return All fields must be filled', async () => {
+    it('When empty email, should return All fields must be filled', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -185,7 +185,7 @@ describe('User login', () => {
       );
     });
 
-    it('When invalid password in body, should return All fields must be filled', async () => {
+    it('When invalid password, should return All fields must be filled', async () => {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
