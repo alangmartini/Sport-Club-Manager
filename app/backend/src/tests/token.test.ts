@@ -8,63 +8,90 @@ import { app } from '../app';
 // Types and Interfaces
 import { Response } from 'superagent';
 import { StatusCodes } from 'http-status-codes';
-import ITeam from '../interfaces/teams/teams.interface';
 import IreqResToken from '../interfaces/requisitionsResponses/token.interface';
+import IUser from '../interfaces/users/IUser.interface';
+import IUserBody from '../interfaces/users/IUserBody.interface';
 
 // Mocks
-import teamsMock from './mocks/teams/teams.mock';
-import errorsMock from './mocks/errors/errorsMock.mock';
-
-// Models
-import Teams from '../database/models/teams.model';
-import ExistenceClient from '../modules/existence/ExistenceClient.client';
-import HashClient from '../modules/auth/HashClient.client';
 import usersMock from './mocks/users/users.mock';
+import rolesMock from './mocks/users/role.mock';
+import authErrorsMock from './mocks/errors/authErrors.mock';
+
+// Models and Clients
+import HashClient from '../modules/auth/HashClient.client';
 import Users from '../database/models/users.model';
-import IUser from '../interfaces/users/IUser.interface';
 
 chai.use(chaiHttp);
 const { expect } = chai;
 
-afterEach(()=>{
+afterEach(() => {
   sinon.restore();
-})
+});
 
 const hashClient = new HashClient();
 
 let chaiLoginHttpResponse: Response;
+let usersFindOneStub: any;
 
-async function logIn (): Promise<IreqResToken> {
+async function logIn(): Promise<IreqResToken> {
   // Mocks
-  const hashedPassword = await hashClient.generateHash(
-    usersMock.USER.password
-  );
+  const hashedPassword = await hashClient.generateHash(usersMock.USER.password);
 
-  const usersFindOneStub = sinon.stub(Users, 'findOne');  
+  usersFindOneStub = sinon.stub(Users, 'findOne');
+
   usersFindOneStub.resolves({
     ...usersMock.USER,
-    password: hashedPassword
+    password: hashedPassword,
   } as IUser);
 
-  chaiLoginHttpResponse = await chai
-    .request(app)
-    .post('/login')
-    .send({
-      email: usersMock.VALID_EMAIL,
-      hashedPassword: usersMock.VALID_PASSWORD
-  });
+  const userBody = {
+    email: usersMock.VALID_EMAIL,
+    password: usersMock.VALID_PASSWORD,
+  } as IUserBody;
 
-return chaiLoginHttpResponse.body;
+  chaiLoginHttpResponse = await chai.request(app).post('/login').send(userBody);
+
+  return chaiLoginHttpResponse.body;
 }
 
-describe("Token autentication", function () {
+describe.only('Token autentication', function () {
   let chaiHttpResponse: Response;
 
-  describe("Succeful returns", function () {
-    it("After logging and getting a token, should have access normally", function () {
-      // Log in and get token
-      // Try a route
+  describe('Succeful returns', function () {
+    it('After logging and getting a token, should have access normally', async function () {
+      const tokenObj: IreqResToken = await logIn();
 
+      // Try a route
+      chaiHttpResponse = await chai
+        .request(app)
+        .get('/login/role')
+        .set('Authorization', `Bearer ${tokenObj.token}`);
+
+      expect(chaiHttpResponse.body).to.deep.equal(rolesMock.userRole);
+    });
+  });
+
+  describe('Unsucceful returns', function () {
+    it('When no token, should return Token Not Found', async function () {
+      chaiHttpResponse = await chai.request(app).get('/login/role');
+
+      expect(chaiHttpResponse.body).to.deep.equal(
+        authErrorsMock.authTokenNotFound
+      );
+
+      expect(chaiHttpResponse.status).to.equal(StatusCodes.UNAUTHORIZED);
+    });
+
+    it('When invalid token, should return Token must be a valid token', async function () {
+      chaiHttpResponse = await chai.request(app)
+        .get('/login/role')
+        .set('Authorization', 'notcoolautorization');
+
+      expect(chaiHttpResponse.body).to.deep.equal(
+        authErrorsMock.tokenNotValid
+      );
+
+      expect(chaiHttpResponse.status).to.equal(StatusCodes.UNAUTHORIZED);
     });
   });
 });

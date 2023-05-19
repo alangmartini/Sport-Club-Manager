@@ -12,7 +12,7 @@ import { StatusCodes } from 'http-status-codes';
 import IUser from '../interfaces/users/IUser.interface';
 
 // Mocks
-import authErrors from './mocks/errors/authErrorsMock.mock';
+import authErrors from './mocks/errors/authErrors.mock';
 import usersMock from './mocks/users/users.mock';
 
 // Class

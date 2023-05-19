@@ -12,7 +12,7 @@ import ITeam from '../interfaces/teams/teams.interface';
 
 // Mocks
 import teamsMock from './mocks/teams/teams.mock';
-import errorsMock from './mocks/errors/errorsMock.mock';
+import errorsMock from './mocks/errors/httpErrors.mock';
 
 // Models
 import Teams from '../database/models/teams.model';
