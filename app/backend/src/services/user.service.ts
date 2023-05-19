@@ -1,4 +1,3 @@
-import * as bcrypt from 'bcryptjs';
 import Users from '../database/models/users.model';
 import IUser from '../interfaces/users/IUser.interface';
 import IUserBody from '../interfaces/users/IUserBody.interface';
@@ -27,7 +26,6 @@ export default class UserService {
     const hashClient = new HashClient();
 
     const match = await hashClient.compareHash(password, user.password);
-    // const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
       const error = new BasedError('', EnumErrorValidation.EMAIL_OR_PASSWORD_INVALID);
