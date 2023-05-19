@@ -4,6 +4,7 @@ import IUser from '../interfaces/users/IUser.interface';
 import IUserBody from '../interfaces/users/IUserBody.interface';
 import BasedError from '../errors/BasedError.class';
 import EnumErrorValidation from '../enums/ErrorValidation.enum';
+import HashClient from '../modules/auth/HashClient.client';
 
 export default class UserService {
   private userModel = Users;
@@ -23,7 +24,10 @@ export default class UserService {
       throw error;
     }
 
-    const match = await bcrypt.compare(password, user.password);
+    const hashClient = new HashClient();
+
+    const match = await hashClient.compareHash(password, user.password);
+    // const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
       const error = new BasedError('', EnumErrorValidation.EMAIL_OR_PASSWORD_INVALID);

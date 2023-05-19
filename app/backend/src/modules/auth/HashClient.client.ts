@@ -1,20 +1,21 @@
+import IHashClient from '../../interfaces/auth/IHashClient.interface';
 import IHashProvider from '../../interfaces/auth/IHashProvider.interface';
 import BCryptProvider from './Bcrypt.provider';
 
-export default class HashClient {
-  private _hashProvider: IHashProvider;
+export default class HashClient implements IHashClient {
+  hashProvider: IHashProvider;
 
   constructor() {
     const hashProvider = new BCryptProvider();
 
-    this._hashProvider = hashProvider;
+    this.hashProvider = hashProvider;
   }
 
-  async hashPassword(payload: string): Promise<string> {
-    return this._hashProvider.generateHash(payload);
+  async generateHash(payload: string): Promise<string> {
+    return this.hashProvider.generateHash(payload);
   }
 
   async compareHash(payload:string, hashed:string): Promise<boolean> {
-    return this._hashProvider.compareHash(payload, hashed);
+    return this.hashProvider.compareHash(payload, hashed);
   }
 }
