@@ -1,5 +1,5 @@
-import EnumExistenceError from '../../enums/ExistenceError.enum';
-import TValidateResult from '../../types/TValidateResult.type';
+import EnumExistenceError from '../../../enums/ExistenceError.enum';
+import TValidateResult from '../../../types/TValidateResult.type';
 
 interface IExistenceProvider<T> {
   object: T;

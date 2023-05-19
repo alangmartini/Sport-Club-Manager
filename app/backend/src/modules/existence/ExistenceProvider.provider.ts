@@ -1,6 +1,6 @@
 import TValidateResult from '../../types/TValidateResult.type';
 import BasedError from '../../errors/BasedError.class';
-import IExistenceProvider from '../../interfaces/existence/IExistenceProvider.interface';
+import IExistenceProvider from '../../interfaces/modules/existence/IExistenceProvider.interface';
 import EnumExistenceError from '../../enums/ExistenceError.enum';
 
 class ExistenceProvider<T>

@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcryptjs';
-import IHashProvider from '../../interfaces/auth/IHashProvider.interface';
+import IHashProvider from '../../interfaces/modules/auth/IHashProvider.interface';
 
 class BCryptProvider implements IHashProvider {
   hm = '';

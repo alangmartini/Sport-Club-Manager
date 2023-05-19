@@ -1,4 +1,4 @@
-import TValidateResult from '../../types/TValidateResult.type';
+import TValidateResult from '../../../types/TValidateResult.type';
 import IExistenceProvider from './IExistenceProvider.interface';
 
 interface IExistenceClient<T> {

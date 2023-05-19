@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
-import ITokenPayload from '../../interfaces/auth/ITokenPayload.interface';
-import ITokenProvider from '../../interfaces/auth/ITokenProvider.interface';
+import ITokenPayload from '../../interfaces/modules/auth/ITokenPayload.interface';
+import ITokenProvider from '../../interfaces/modules/auth/ITokenProvider.interface';
 
 class JWTokenProvider implements ITokenProvider {
   private _secret: Secret = process.env.JWT_SECRET || 'secret';

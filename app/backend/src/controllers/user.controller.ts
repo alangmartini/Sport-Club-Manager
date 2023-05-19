@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import UserService from '../services/user.service';
 import TokenClient from '../modules/auth/TokenClient.client';
+import IreqResToken from '../interfaces/requisitionsResponses/token.interface';
 
 export default class UserController {
   private userService: UserService;
@@ -29,7 +30,9 @@ export default class UserController {
       const payload = { userId: loggedUser.id };
       const token = tokenClient.generateToken(payload);
 
-      res.status(StatusCodes.OK).json({ token });
+      const tokenObj: IreqResToken = { token };
+
+      res.status(StatusCodes.OK).json(tokenObj);
     } catch (error) {
       next(error);
     }

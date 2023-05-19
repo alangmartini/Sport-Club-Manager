@@ -1,6 +1,6 @@
 import EnumExistenceError from '../../enums/ExistenceError.enum';
-import IExistenceClient from '../../interfaces/existence/IExistenceClient.interface';
-import IExistenceProvider from '../../interfaces/existence/IExistenceProvider.interface';
+import IExistenceClient from '../../interfaces/modules/existence/IExistenceClient.interface';
+import IExistenceProvider from '../../interfaces/modules/existence/IExistenceProvider.interface';
 import TValidateResult from '../../types/TValidateResult.type';
 import ExistenceProvider from './ExistenceProvider.provider';
 

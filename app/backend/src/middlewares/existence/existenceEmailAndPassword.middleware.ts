@@ -3,7 +3,8 @@ import EnumExistenceError from '../../enums/ExistenceError.enum';
 import IUserBody from '../../interfaces/users/IUserBody.interface';
 import TValidateResult from '../../types/TValidateResult.type';
 import BasedError from '../../errors/BasedError.class';
-import IExistenceMiddleware from '../../interfaces/existence/IExistenceMiddleware.interface';
+import IExistenceMiddleware
+  from '../../interfaces/modules/existence/IExistenceMiddleware.interface';
 import ExistenceClient from '../../modules/existence/ExistenceClient.client';
 
 class existenceAssertEmailAndPassword implements IExistenceMiddleware<IUserBody> {

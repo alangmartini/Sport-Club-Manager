@@ -24,17 +24,17 @@ chai.use(chaiHttp);
 const { expect } = chai;
 const hashClient = new HashClient();
 
-afterEach(() => {
+afterEach(function () {
   sinon.restore();
 });
 
-describe('User login', () => {
+describe('User login', function () {
   let chaiHttpResponse: Response;
 
   describe('Successful returns', function () {
-    beforeEach(async () => {
+    beforeEach(async function () {
       const hashedPassword =
-        await hashClient.hashPassword(
+        await hashClient.generateHash(
           usersMock.USER.password,
         );
     
@@ -44,7 +44,7 @@ describe('User login', () => {
       } as IUser);
     });
 
-    it('Should return a token', async () => {
+    it('Should return a token', async function () {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -64,7 +64,7 @@ describe('User login', () => {
   });
 
   describe('Unsucceful returns', function () {
-    it('When wrong password, should return Invalid email or password', async () => {
+    it('When wrong password, should return Invalid email or password', async function () {
       sinon.stub(bcrypt, 'compare').resolves(false);
   
       sinon.stub(Users, 'findOne').resolves({
@@ -88,7 +88,7 @@ describe('User login', () => {
       );
     });
 
-    it('When account with email not found, should return Invalid email or password', async () => {
+    it('When account with email not found, should return Invalid email or password', async function () {
       sinon.stub(Users, 'findOne').resolves(null);
 
       chaiHttpResponse = await chai
@@ -107,7 +107,7 @@ describe('User login', () => {
       );
     });
 
-    it('When no email, should return All fields must be filled', async () => {
+    it('When no email, should return All fields must be filled', async function () {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -123,7 +123,7 @@ describe('User login', () => {
       );
     });
 
-    it('When no password, should return All fields must be filled', async () => {
+    it('When no password, should return All fields must be filled', async function () {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -137,7 +137,7 @@ describe('User login', () => {
       );
     });
 
-    it('When empty email, should return All fields must be filled', async () => {
+    it('When empty email, should return All fields must be filled', async function () {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -154,7 +154,7 @@ describe('User login', () => {
       );
     });
 
-    it('When empty password, should return All fields must be filled', async () => {
+    it('When empty password, should return All fields must be filled', async function () {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -168,7 +168,7 @@ describe('User login', () => {
       );
     });
 
-    it('When invalid email, should return All fields must be filled', async () => {
+    it('When invalid email, should return All fields must be filled', async function () {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -185,7 +185,7 @@ describe('User login', () => {
       );
     });
 
-    it('When invalid password, should return All fields must be filled', async () => {
+    it('When invalid password, should return All fields must be filled', async function () {
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
