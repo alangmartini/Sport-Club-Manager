@@ -1,0 +1,11 @@
+@types/bcryptjs
+@types/joi
+@types/jsonwebtoken
+@hapi/boom
+bcrypt
+bcryptjs
+express
+
+
+
+
