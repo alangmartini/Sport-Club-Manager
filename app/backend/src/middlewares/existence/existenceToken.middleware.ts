@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 import EnumExistenceError from '../../enums/ExistenceError.enum';
-import IUserBody from '../../interfaces/users/IUserBody.interface';
 import TValidateResult from '../../types/TValidateResult.type';
 import BasedError from '../../errors/BasedError.class';
 import IExistenceMiddleware
   from '../../interfaces/modules/existence/IExistenceMiddleware.interface';
 import ExistenceClient from '../../modules/existence/ExistenceClient.client';
+import TAuthHeader from '../../types/TAuthHeader.type';
 
-class existenceEmailAndPassword implements IExistenceMiddleware<IUserBody> {
-  existenceClient: ExistenceClient<IUserBody>;
-  object = { email: '', password: '' };
-  typeOfError = EnumExistenceError.NO_EMAIL_AND_PASSWORD;
+class ExistenceToken implements IExistenceMiddleware<TAuthHeader> {
+  existenceClient: ExistenceClient<TAuthHeader>;
+  object = '';
+  typeOfError = EnumExistenceError.NO_TOKEN;
 
   constructor() {
     this.middleware = this.middleware.bind(this);
@@ -19,10 +19,10 @@ class existenceEmailAndPassword implements IExistenceMiddleware<IUserBody> {
   }
 
   middleware(req: Request, res: Response, next: NextFunction) {
-    const user: IUserBody = req.body;
+    const authToken = req.headers.authorization;
 
     try {
-      const result: TValidateResult = this.existenceClient.assertExist(user);
+      const result: TValidateResult = this.existenceClient.assertExist(authToken);
 
       if (result instanceof BasedError) {
         throw result;
@@ -35,4 +35,4 @@ class existenceEmailAndPassword implements IExistenceMiddleware<IUserBody> {
   }
 }
 
-export default existenceEmailAndPassword;
+export default ExistenceToken;

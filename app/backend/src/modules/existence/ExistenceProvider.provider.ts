@@ -17,6 +17,7 @@ implements IExistenceProvider<T> {
   }
 
   assertExist(dataToAssert: T): TValidateResult {
+    /* If its a string, it just assert is not empty */
     const hasAllKeys = this.deepKeyEqual(this.object, dataToAssert);
     const isNonEmpty = this.verifyNoEmptyFields(dataToAssert);
     if (
@@ -35,6 +36,10 @@ implements IExistenceProvider<T> {
 
   // Verify if both objects have same props
   deepKeyEqual(obj1: any, obj2: any): true | Error {
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+      return true;
+    }
+
     const keys1 = Object.keys(obj1).sort();
     const keys2 = Object.keys(obj2).sort();
 

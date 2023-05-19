@@ -5,27 +5,46 @@ import IErrorHandle from '../../interfaces/errors/IErrorHandle.interface';
 import BasedError from '../BasedError.class';
 import EnumExistenceError from '../../enums/ExistenceError.enum';
 
-class ExistenceErrorHandle
-implements IErrorHandle {
+const ErrorMessages = {
+  noEmailAndPassword: {
+    output: { message: 'All fields must be filled' },
+    status: StatusCodes.BAD_REQUEST,
+  },
+  noToken: {
+    output: { message: 'Token not found' },
+    status: StatusCodes.UNAUTHORIZED,
+  },
+  internalServerError: {
+    output: {
+      statusCode: 500,
+      error: 'Internal Server Error',
+      message: 'An internal server error occurred',
+    },
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+  },
+};
+
+class ExistenceErrorHandle implements IErrorHandle {
   statusCode!: TStatusCode;
   output!: IExpressErrorOutput;
+
+  updateStatusAndOutput({ status, output }: { status: TStatusCode; output: IExpressErrorOutput }) {
+    this.statusCode = status;
+    this.output = output;
+  }
 
   constructor(error: BasedError) {
     switch (error.type) {
       case EnumExistenceError.NO_EMAIL_AND_PASSWORD:
-        this.statusCode = StatusCodes.BAD_REQUEST;
-        this.output = {
-          message: 'All fields must be filled',
-        };
+        this.updateStatusAndOutput(ErrorMessages.noEmailAndPassword);
+
+        break;
+      case EnumExistenceError.NO_TOKEN:
+        this.updateStatusAndOutput(ErrorMessages.noToken);
 
         break;
       default:
-        this.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
-        this.output = {
-          statusCode: 500,
-          error: 'Internal Server Error',
-          message: 'An internal server error occurred',
-        };
+        this.updateStatusAndOutput(ErrorMessages.internalServerError);
     }
   }
 }
