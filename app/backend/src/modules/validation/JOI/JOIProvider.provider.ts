@@ -1,15 +1,15 @@
 import * as JOI from 'joi';
 import IJOISchema from '../../../interfaces/modules/validation/Joi/IJOISchema.interface';
 import EnumValidation from '../../../enums/validation.enum';
-import IValidationProvider from '../../../interfaces/modules/validation/IValidationProvider.interface';
+import IValidationProvider
+  from '../../../interfaces/modules/validation/IValidationProvider.interface';
 import TValidateResult from '../../../types/TValidateResult.type';
 import TRuleSet from '../../../types/TRuleSet.type';
 import BasedError from '../../../errors/BasedError.class';
 import EnumErrorHTTP from '../../../enums/HTTPerror.enum';
 import SchemaEmailAndPassword from './schemas/emailAndPassword.schema';
 
-class JOIProvider<T>
-implements IValidationProvider {
+class JOIProvider<T> implements IValidationProvider {
   private _schema?: IJOISchema;
   ruleSet: TRuleSet;
   typeOfError: string;
