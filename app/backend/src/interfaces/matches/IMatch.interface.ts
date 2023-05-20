@@ -1,6 +1,7 @@
+import { Model } from 'sequelize';
 import ITeams from '../teams/teams.interface';
 
-interface IMatch {
+interface IMatch extends Model{
   id: number;
   homeTeamId: number;
   homeTeamGoals: number;
