@@ -82,6 +82,7 @@ describe('GET /matches with filters', function () {
     });
   });
 });
+
 describe('PATCH /matches/:id/finish', function () {
   let chaiHttpResponse: Response;
 });
