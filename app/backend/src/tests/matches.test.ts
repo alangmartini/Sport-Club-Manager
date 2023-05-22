@@ -156,8 +156,8 @@ describe.only('PATCH /matches/:id', function () {
       .patch('/matches/1')
       .set('authorization', token.token)
 
-    expect(chaiHttpResponse.body).to.deep.equal(ErrorMessages.noGoalsBody);
-    expect(chaiHttpResponse.status).to.equal(StatusCodes.BAD_REQUEST)
+      expect(chaiHttpResponse.body).to.deep.equal({ message: ErrorMessages.noGoalsBody.output.message });
+    expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status)
     });
 
     it('When a empty body is given, should return a error', async function() {
@@ -169,8 +169,8 @@ describe.only('PATCH /matches/:id', function () {
       .set('authorization', token.token)
       .send({})
 
-    expect(chaiHttpResponse.body).to.deep.equal(ErrorMessages.noGoalsBody);
-    expect(chaiHttpResponse.status).to.equal(StatusCodes.BAD_REQUEST)
+      expect(chaiHttpResponse.body).to.deep.equal({ message: ErrorMessages.noGoalsBody.output.message });
+      expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status)
     });
   })
 });
