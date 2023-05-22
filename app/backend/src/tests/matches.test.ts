@@ -16,6 +16,7 @@ import matchesMock from './mocks/matches/matches.mock';
 // Models
 import Matches from '../database/models/matches.model';
 import { logIn } from './token.test';
+import { ErrorMessages } from '../errors/existence/ExistenceErrorHandle.handle';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -107,14 +108,73 @@ describe('PATCH /matches/:id/finish', function () {
 
     expect(mockMatch.inProgress).to.equal(false);
     expect(chaiHttpResponse.body).to.deep.equal({ "message": "Finished" });
-    expect(chaiHttpResponse.status).to.equal(200)
+    expect(chaiHttpResponse.status).to.equal(StatusCodes.OK)
     });
   })
 });
 
-describe('PATCH /matches/:id', function () {
+describe.only('PATCH /matches/:id', function () {
   let chaiHttpResponse: Response;
+  let ModelStub: sinon.SinonStub;
+
+  describe('Succeful routes', function () {
+    it('Should update a match goals', async function() {
+    const mockMatch = matchesMock.matchWithId;
+    const goalsBody = {
+      homeTeamGoals: 3,
+      awayTeamGoals: 1,
+    }
+    const updatedMockMatch = { ...mockMatch, ...goalsBody };
+    ModelStub = sinon.stub(Matches, 'update').callsFake(async () => {
+      mockMatch.homeTeamGoals = goalsBody.homeTeamGoals;
+      mockMatch.awayTeamGoals = goalsBody.awayTeamGoals;
+
+      return [1];
+    });
+
+
+    const token = await logIn();
+
+    chaiHttpResponse = await chai
+      .request(app)
+      .patch('/matches/1')
+      .set('authorization', token.token)
+      .send(goalsBody);
+
+    
+    expect(chaiHttpResponse.body).to.deep.equal({ updatedMatch: updatedMockMatch });
+    expect(chaiHttpResponse.status).to.equal(StatusCodes.OK)
+    });
+  });
+
+  describe('Unsucceful routes', function () {
+    it('When no body is given, should return a error', async function() {
+    const token = await logIn();
+
+    chaiHttpResponse = await chai
+      .request(app)
+      .patch('/matches/1')
+      .set('authorization', token.token)
+
+    expect(chaiHttpResponse.body).to.deep.equal(ErrorMessages.noGoalsBody);
+    expect(chaiHttpResponse.status).to.equal(StatusCodes.BAD_REQUEST)
+    });
+
+    it('When a empty body is given, should return a error', async function() {
+    const token = await logIn();
+
+    chaiHttpResponse = await chai
+      .request(app)
+      .patch('/matches/1')
+      .set('authorization', token.token)
+      .send({})
+
+    expect(chaiHttpResponse.body).to.deep.equal(ErrorMessages.noGoalsBody);
+    expect(chaiHttpResponse.status).to.equal(StatusCodes.BAD_REQUEST)
+    });
+  })
 });
+
 describe('POST /matches', function () {
   let chaiHttpResponse: Response;
 });
