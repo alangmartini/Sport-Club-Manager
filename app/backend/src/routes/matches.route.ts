@@ -2,6 +2,6 @@ import * as express from 'express';
 
 const matchesRoute = express.Router();
 
-matchesRoute.get('')
+matchesRoute.get('');
 
 export default matchesRoute;
