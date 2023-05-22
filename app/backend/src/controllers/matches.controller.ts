@@ -13,6 +13,7 @@ export default class MatchesController {
     this.findAll = this.findAll.bind(this);
     this.findById = this.findById.bind(this);
     this.findAllByQuery = this.findAllByQuery.bind(this);
+    this.finishMatch = this.finishMatch.bind(this);
 
     this.matchService = new MatchesService();
   }
@@ -22,7 +23,6 @@ export default class MatchesController {
     res: Response,
     next: NextFunction,
   ) {
-    console.log('query is', req.query);
     if (Object.keys(req.query).length > 0) {
       return this.findAllByQuery(req, res, next);
     }
@@ -33,7 +33,6 @@ export default class MatchesController {
 
       res.status(StatusCodes.OK).json(matches);
     } catch (error) {
-      console.log('erroris', error);
       next(error);
     }
   }
@@ -64,6 +63,22 @@ export default class MatchesController {
       const match = await this.matchService.findById(id);
 
       res.status(StatusCodes.OK).json(match);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async finishMatch(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    const { id } = req.params;
+
+    try {
+      await this.matchService.finishMatch(id);
+
+      res.status(StatusCodes.OK).json({ message: 'Finished' });
     } catch (error) {
       next(error);
     }

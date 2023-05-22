@@ -76,7 +76,6 @@ export default class MatchesService {
     const { inProgress } = query;
 
     const sequelizeQuery = this.constructQuery(homeTeamName, alwayTeamName, inProgress);
-    console.log('sequelizeQuery is:', sequelizeQuery);
 
     const matches = (await this.matchesModel.findAll(
       sequelizeQuery,
@@ -100,5 +99,24 @@ export default class MatchesService {
     }
 
     return match;
+  }
+
+  async finishMatch(id: string): Promise<number | undefined> {
+    try {
+      const [numberOfAffectedRows] = await this.matchesModel
+        .update({ inProgress: false }, {
+          where: { id },
+        }) as [number];
+
+      console.log('numberOfAffectedRows is:', numberOfAffectedRows);
+      if (numberOfAffectedRows === 0) {
+        const error = new BasedError('Match not found', EnumErrorHTTP.NOT_FOUND);
+        throw error;
+      }
+
+      return numberOfAffectedRows;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
