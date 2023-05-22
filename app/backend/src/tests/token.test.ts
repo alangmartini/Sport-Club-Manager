@@ -54,7 +54,7 @@ async function logIn(): Promise<IreqResToken> {
   return chaiLoginHttpResponse.body;
 }
 
-describe.only('Token autentication', function () {
+describe('Token autentication', function () {
   let chaiHttpResponse: Response;
 
   describe('Succeful returns', function () {
