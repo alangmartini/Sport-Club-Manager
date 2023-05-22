@@ -5,7 +5,7 @@ import IErrorHandle from '../../interfaces/errors/IErrorHandle.interface';
 import BasedError from '../BasedError.class';
 import EnumExistenceError from '../../enums/ExistenceError.enum';
 
-const ErrorMessages = {
+export const ErrorMessages = {
   noEmailAndPassword: {
     output: { message: 'All fields must be filled' },
     status: StatusCodes.BAD_REQUEST,

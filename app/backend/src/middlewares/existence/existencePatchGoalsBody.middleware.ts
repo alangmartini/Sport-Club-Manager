@@ -7,7 +7,7 @@ import BasedError from '../../errors/BasedError.class';
 import ExistenceClient from '../../modules/existence/ExistenceClient.client';
 import IUpdateGoalsBody from '../../interfaces/matches/IUpdateGoalsBody.interface';
 
-class ExistenceMatchScore implements IExistenceMiddleware<IUpdateGoalsBody> {
+class ExistenceUpdateBodyGoals implements IExistenceMiddleware<IUpdateGoalsBody> {
   existenceClient: ExistenceClient<IUpdateGoalsBody>;
   // Object is used to validate if the incoming body has the same props
   object = {
@@ -40,4 +40,4 @@ class ExistenceMatchScore implements IExistenceMiddleware<IUpdateGoalsBody> {
   }
 }
 
-export default ExistenceMatchScore;
+export default ExistenceUpdateBodyGoals;
