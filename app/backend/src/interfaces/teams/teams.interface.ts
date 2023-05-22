@@ -1,6 +1,6 @@
 import { Model } from 'sequelize';
 
 export default interface ITeams extends Model {
-  id?: number;
+  id: number;
   teamName: string;
 }

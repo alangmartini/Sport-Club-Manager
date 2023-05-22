@@ -1,0 +1,104 @@
+import IMatch from '../interfaces/matches/IMatch.interface';
+import Matches from '../database/models/matches.model';
+import EnumErrorHTTP from '../enums/HTTPerror.enum';
+import BasedError from '../errors/BasedError.class';
+import IMatchesQuery from '../interfaces/matches/IMatchesQuery.interface';
+import Teams from '../database/models/teams.model';
+
+type queryParameter = string | undefined | boolean;
+
+function stringToBoolean(str: string): boolean {
+  return str.toLocaleLowerCase() === 'true';
+}
+
+export default class MatchesService {
+  private matchesModel = Matches;
+  private teamsModel = Teams;
+
+  static assertIsMatch(object: IMatch): boolean {
+    return !!object.id;
+  }
+
+  async findAll(): Promise<IMatch[]> {
+    const allMatches = (await this.matchesModel.findAll(
+      {
+        include:
+        [
+          this.buildTeamInclude('homeTeam'), this.buildTeamInclude('awayTeam'),
+        ],
+      },
+    )) as IMatch[];
+
+    if (!allMatches.every(MatchesService.assertIsMatch) || !allMatches.length) {
+      const error = new BasedError('Internal Error', EnumErrorHTTP.BAD_IMPLEMENTATION);
+
+      throw error;
+    }
+
+    return allMatches;
+  }
+
+  buildTeamIncludeWhere(team: queryParameter, alias: string) {
+    return {
+      model: this.teamsModel,
+      as: alias,
+      attributes: ['teamName'],
+      where: team ? { teamName: team } : undefined,
+    };
+  }
+
+  buildTeamInclude(alias: string) {
+    return {
+      model: this.teamsModel,
+      as: alias,
+      attributes: ['teamName'],
+    };
+  }
+
+  constructQuery(
+    homeTeamName: queryParameter,
+    awayTeamName: queryParameter,
+    inProgress: string | undefined,
+  ) {
+    const boolInProgress = inProgress !== undefined ? stringToBoolean(inProgress) : undefined;
+
+    return {
+      where: boolInProgress !== undefined ? { inProgress: boolInProgress } : undefined,
+      include: [
+        this.buildTeamIncludeWhere(homeTeamName, 'homeTeam'),
+        this.buildTeamIncludeWhere(awayTeamName, 'awayTeam'),
+      ],
+    };
+  }
+
+  async findAllByQuery(query: IMatchesQuery): Promise<IMatch[]> {
+    const { homeTeam: homeTeamName, alwayTeam: alwayTeamName } = query;
+    const { inProgress } = query;
+
+    const sequelizeQuery = this.constructQuery(homeTeamName, alwayTeamName, inProgress);
+    console.log('sequelizeQuery is:', sequelizeQuery);
+
+    const matches = (await this.matchesModel.findAll(
+      sequelizeQuery,
+    )) as IMatch[];
+
+    return matches;
+  }
+
+  async findById(id: string): Promise<IMatch> {
+    const match = (await this.matchesModel.findByPk(id)) as IMatch;
+
+    if (match === null) {
+      const error = new BasedError('', EnumErrorHTTP.NOT_FOUND);
+      throw error;
+    }
+
+    if (!MatchesService.assertIsMatch(match)) {
+      const error = new BasedError('', EnumErrorHTTP.BAD_IMPLEMENTATION);
+
+      throw error;
+    }
+
+    return match;
+  }
+}
