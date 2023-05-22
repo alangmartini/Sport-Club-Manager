@@ -33,7 +33,7 @@ const hashClient = new HashClient();
 let chaiLoginHttpResponse: Response;
 let usersFindOneStub: any;
 
-async function logIn(): Promise<IreqResToken> {
+export async function logIn(): Promise<IreqResToken> {
   // Mocks
   const hashedPassword = await hashClient.generateHash(usersMock.USER.password);
 

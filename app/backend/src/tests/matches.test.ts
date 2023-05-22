@@ -15,6 +15,7 @@ import matchesMock from './mocks/matches/matches.mock';
 
 // Models
 import Matches from '../database/models/matches.model';
+import { logIn } from './token.test';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -86,7 +87,31 @@ describe('GET /matches with filters', function () {
 
 describe('PATCH /matches/:id/finish', function () {
   let chaiHttpResponse: Response;
+  let ModelStub: sinon.SinonStub;
+
+  describe('Succeful routes', function () {
+    it('Should finish a match', async function() {
+    const mockMatch = matchesMock.matchWithId;
+    const token = await logIn();
+
+    ModelStub = sinon.stub(Matches, 'update').callsFake(async () => {
+      mockMatch.inProgress = false;
+
+      return [1];
+    });
+
+    chaiHttpResponse = await chai
+      .request(app)
+      .patch('/matches/1/finish')
+      .set('authorization', token.token)
+
+    expect(mockMatch.inProgress).to.equal(false);
+    expect(chaiHttpResponse.body).to.deep.equal({ "message": "Finished" });
+    expect(chaiHttpResponse.status).to.equal(200)
+    });
+  })
 });
+
 describe('PATCH /matches/:id', function () {
   let chaiHttpResponse: Response;
 });
