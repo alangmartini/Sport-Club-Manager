@@ -22,6 +22,10 @@ const ErrorMessages = {
     },
     status: StatusCodes.INTERNAL_SERVER_ERROR,
   },
+  noGoalsBody: {
+    output: { message: 'No goals for home and away team provided' },
+    status: StatusCodes.BAD_REQUEST,
+  },
 };
 
 class ExistenceErrorHandle implements IErrorHandle {
@@ -43,6 +47,11 @@ class ExistenceErrorHandle implements IErrorHandle {
         this.updateStatusAndOutput(ErrorMessages.noToken);
 
         break;
+
+      case EnumExistenceError.NO_GOALS_BODY:
+        this.updateStatusAndOutput(ErrorMessages.noGoalsBody);
+        break;
+
       default:
         this.updateStatusAndOutput(ErrorMessages.internalServerError);
     }
