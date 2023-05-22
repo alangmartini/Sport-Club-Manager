@@ -4,6 +4,7 @@ import EnumErrorHTTP from '../enums/HTTPerror.enum';
 import BasedError from '../errors/BasedError.class';
 import IMatchesQuery from '../interfaces/matches/IMatchesQuery.interface';
 import Teams from '../database/models/teams.model';
+import IUpdateGoalsBody from '../interfaces/matches/IUpdateGoalsBody.interface';
 
 type queryParameter = string | undefined | boolean;
 
@@ -102,21 +103,16 @@ export default class MatchesService {
   }
 
   async finishMatch(id: string): Promise<number | undefined> {
-    try {
-      const [numberOfAffectedRows] = await this.matchesModel
-        .update({ inProgress: false }, {
-          where: { id },
-        }) as [number];
+    const [numberOfAffectedRows] = await this.matchesModel
+      .update({ inProgress: false }, {
+        where: { id },
+      }) as [number];
 
-      console.log('numberOfAffectedRows is:', numberOfAffectedRows);
-      if (numberOfAffectedRows === 0) {
-        const error = new BasedError('Match not found', EnumErrorHTTP.NOT_FOUND);
-        throw error;
-      }
-
-      return numberOfAffectedRows;
-    } catch (e) {
-      console.log(e);
+    if (numberOfAffectedRows === 0) {
+      const error = new BasedError('Match not found', EnumErrorHTTP.NOT_FOUND);
+      throw error;
     }
+
+    return numberOfAffectedRows;
   }
 }
