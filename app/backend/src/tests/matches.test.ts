@@ -66,6 +66,7 @@ describe('GET /matches with filters', function () {
         .resolves(matchesMock.filteredTeamsHomeTeamSaoPaulo as Array<IMatch>);
 
       chaiHttpResponse = await chai.request(app).get('/matches?homeTeam=Sao%20Paulo');
+      console.log('chaiHttpResponse is:', chaiHttpResponse.body);
 
       expect(chaiHttpResponse.body).to.deep.equal(matchesMock.filteredTeamsHomeTeamSaoPaulo);
       expect(chaiHttpResponse.status).to.equal(StatusCodes.OK);
