@@ -113,7 +113,7 @@ describe('PATCH /matches/:id/finish', function () {
   })
 });
 
-describe.only('PATCH /matches/:id', function () {
+describe('PATCH /matches/:id', function () {
   let chaiHttpResponse: Response;
   let ModelStub: sinon.SinonStub;
 
@@ -125,12 +125,22 @@ describe.only('PATCH /matches/:id', function () {
       awayTeamGoals: 1,
     }
     const updatedMockMatch = { ...mockMatch, ...goalsBody };
-    ModelStub = sinon.stub(Matches, 'update').callsFake(async () => {
+    interface teste {
+      [key: string]: number
+    }
+
+    /*
+      'Any' is used here because sequelize update has a { returning: true } method
+      where it returns the updated entity.
+      But sinon.stub can't acess the updated type and ts don't have a better way
+      to work around this situation.
+    */
+    ModelStub = sinon.stub(Matches, 'update').callsFake(async (): Promise<any> => {
       mockMatch.homeTeamGoals = goalsBody.homeTeamGoals;
       mockMatch.awayTeamGoals = goalsBody.awayTeamGoals;
 
-      return [1];
-    });
+      return [1, [updatedMockMatch]];
+    } );
 
 
     const token = await logIn();
