@@ -23,6 +23,8 @@ matchesRoute.patch(
 
 matchesRoute.patch(
   '/:id',
+  existenceToken.middleware,
+  authToken.middleware,
   existenceUpdateBodyGoals.middleware,
   matchesController.updateGoals,
 );
