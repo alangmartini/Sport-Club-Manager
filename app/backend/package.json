@@ -14,7 +14,7 @@
     "predev": "npm run db:reset",
     "dev": "tsnd --watch \"./src/**\" --transpile-only ./src/server.ts",
     "postinstall": "if [ ! -z 'cat ./packages.npm' ]; then npm i --ignore-scripts $(cat ./packages.npm); fi",
-    "lint": "eslint ./src --ext .ts"
+    "lint": "eslint ./src --ext .ts --fix"
   },
   "keywords": [],
   "author": "",
