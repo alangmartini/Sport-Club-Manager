@@ -24,6 +24,7 @@ matchesRoute.patch(
 matchesRoute.patch(
   '/:id',
   existenceUpdateBodyGoals.middleware,
+  matchesController.updateGoals,
 );
 
 export default matchesRoute;
