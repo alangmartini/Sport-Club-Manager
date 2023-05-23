@@ -12,11 +12,15 @@ import IMatch from '../interfaces/matches/IMatch.interface';
 
 // Mocks
 import matchesMock from './mocks/matches/matches.mock';
+import bodyMock from './mocks/matches/body.mock';
+import teamsMock from './mocks/teams/teams.mock';
 
 // Models
 import Matches from '../database/models/matches.model';
 import { logIn } from './token.test';
-import { ErrorMessages } from '../errors/existence/ExistenceErrorHandle.handle';
+import { ExistenceErrorMessages } from '../errors/existence/ExistenceErrorHandle.handle';
+import ITeams from '../interfaces/teams/teams.interface';
+import { ValidationError } from 'sequelize';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -160,9 +164,9 @@ describe('PATCH /matches/:id', function () {
         .set('authorization', token.token);
 
       expect(chaiHttpResponse.body).to.deep.equal({
-        message: ErrorMessages.noGoalsBody.output.message,
+        message: ExistenceErrorMessages.noGoalsBody.output.message,
       });
-      expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status);
+      expect(chaiHttpResponse.status).to.equal(ExistenceErrorMessages.noGoalsBody.status);
     });
 
     it('When a empty body is given, should return a error', async function () {
@@ -175,9 +179,9 @@ describe('PATCH /matches/:id', function () {
         .send({});
 
       expect(chaiHttpResponse.body).to.deep.equal({
-        message: ErrorMessages.noGoalsBody.output.message,
+        message: ExistenceErrorMessages.noGoalsBody.output.message,
       });
-      expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status);
+      expect(chaiHttpResponse.status).to.equal(ExistenceErrorMessages.noGoalsBody.status);
     });
   });
 });
@@ -186,60 +190,66 @@ describe('POST /matches', function () {
   let chaiHttpResponse: Response;
   let ModelStub: sinon.SinonStub;
 
-  // describe.('Succeful routes', function () {
-  //   it('Should create a match goals', async function() {
-  //   const mockMatch = matchesMock.matchWithId;
+  describe('Succeful routes', function () {
+    it('Should create a match goals', async function() {
+    const mockCreatedMatch = matchesMock.matchWithId;
+    
+    ModelStub = sinon.stub(Matches, 'create').resolves(mockCreatedMatch as IMatch);
 
-  //   /*
-  //     'Any' is used here because sequelize update has a { returning: true } method
-  //     where it returns the updated entity.
-  //     But sinon.stub can't acess the updated type and ts don't have a better way
-  //     to work around this situation.
-  //   */
-  //   ModelStub = sinon.stub(Matches, 'update').callsFake(async (): Promise<any> => {
-  //     mockMatch.homeTeamGoals = goalsBody.homeTeamGoals;
-  //     mockMatch.awayTeamGoals = goalsBody.awayTeamGoals;
+    const token = await logIn();
 
-  //     return [1, [updatedMockMatch]];
-  //   } );
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches')
+      .set('authorization', token.token)
+      .send(bodyMock.postMatchBody);
 
-  //   const token = await logIn();
+    expect(chaiHttpResponse.body).to.deep.equal(mockCreatedMatch);
+    expect(chaiHttpResponse.status).to.equal(StatusCodes.CREATED)
+    });
+  });
 
-  //   chaiHttpResponse = await chai
-  //     .request(app)
-  //     .patch('/matches/1')
-  //     .set('authorization', token.token)
-  //     .send(goalsBody);
+  describe('Unsucceful routes', function () {
+    it('When no body is given, should return a error', async function() {
 
-  //   expect(chaiHttpResponse.body).to.deep.equal({ updatedMatch: updatedMockMatch });
-  //   expect(chaiHttpResponse.status).to.equal(StatusCodes.OK)
-  //   });
-  // });
+    const token = await logIn();
 
-  // describe('Unsucceful routes', function () {
-  //   it('When no body is given, should return a error', async function() {
-  //   const token = await logIn();
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches')
+      .set('authorization', token.token)
+    
+    expect(chaiHttpResponse.body).to.deep.equal({ message: ExistenceErrorMessages.noMatchCreateBody.output.message });
+    expect(chaiHttpResponse.status).to.equal(ExistenceErrorMessages.noMatchCreateBody.status)
+    });
 
-  //   chaiHttpResponse = await chai
-  //     .request(app)
-  //     .patch('/matches/1')
-  //     .set('authorization', token.token)
+    it('When a match have two equal teams, should return a error', async function() {
+    const token = await logIn();
 
-  //     expect(chaiHttpResponse.body).to.deep.equal({ message: ErrorMessages.noGoalsBody.output.message });
-  //   expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status)
-  //   });
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches')
+      .set('authorization', token.token)
+      .send(bodyMock.postMatchBodySameTeam)
 
-  //   it('When a empty body is given, should return a error', async function() {
-  //   const token = await logIn();
+      expect(chaiHttpResponse.body).to.deep.equal({ message: validationErrorMessages.sameTeam.output.message });
+      expect(chaiHttpResponse.status).to.equal(validationErrorMessages.sameTeam.status)
+    });
+    it('When a body ave a non existent team, should return a error', async function() {
+    sinon.stub(Matches, 'findByPk')
+      .onCall(0).resolves(null)
+      .onCall(1).resolves(teamsMock.SECOND_TEAM as ITeams)
 
-  //   chaiHttpResponse = await chai
-  //     .request(app)
-  //     .patch('/matches/1')
-  //     .set('authorization', token.token)
-  //     .send({})
+    const token = await logIn();
 
-  //     expect(chaiHttpResponse.body).to.deep.equal({ message: ErrorMessages.noGoalsBody.output.message });
-  //     expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status)
-  //   });
-  // })
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches')
+      .set('authorization', token.token)
+      .send(bodyMock.postMatchBodyNonExistentTeam)
+
+      expect(chaiHttpResponse.body).to.deep.equal({ message: businessErrorMessages.noGoalsBody.output.message });
+      expect(chaiHttpResponse.status).to.equal(businessErrorMessages.noGoalsBody.status)
+    });
+  })
 });

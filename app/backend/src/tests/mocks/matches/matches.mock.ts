@@ -120,6 +120,15 @@ const matchWithId = {
   inProgress: true
 };
 
+const createdMatch = {
+  "id": 1,
+  "homeTeamId": 16,
+  "homeTeamGoals": 2,
+  "awayTeamId": 8,
+  "awayTeamGoals": 2,
+  "inProgress": true,
+};
+
 export default {
   allTeams,
   filteredTeamsProgressTrue,
@@ -127,4 +136,5 @@ export default {
   filteredTeamsHomeTeamSaoPaulo,
   filteredTeamsAwayTeamInternacional,
   matchWithId,
+  createdMatch,
 };
