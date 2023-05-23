@@ -41,12 +41,12 @@ export default class UserController {
   }
 
   async role(
-    req: Request,
+    req: any,
     res: Response,
     next: NextFunction,
   ) {
     try {
-      const userInfo = req.body as ITokenPayloadInBody;
+      const userInfo = req as ITokenPayloadInBody;
       // If something is wrong, login service will throw an error
       const user = await this.userService.findUser(userInfo.user.userId);
 

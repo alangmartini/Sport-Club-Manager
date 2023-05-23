@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import TokenClient from '../../modules/auth/TokenClient.client';
 import TTokenVerifcationResult from '../../types/TTokenResult.type';
 import EnumAuthError from '../../enums/AuthError.enum';
@@ -12,7 +12,7 @@ class AuthToken {
   }
 
   middleware(
-    req: Request,
+    req: any, // any must be used instead of Response because we store user in req.user
     res: Response,
     next: NextFunction,
   ) {
@@ -27,10 +27,7 @@ class AuthToken {
 
       if (result instanceof Error) throw new BasedError('', this.typeOfError);
 
-      if (!req.body) req.body = { user: result };
-
-      req.body.user = result;
-
+      req.user = result;
       next();
     } catch (error) {
       next(error);

@@ -42,7 +42,6 @@ class ErrorClient implements IErrorClient {
     }
 
     if (error.type in EnumAuthError) {
-      console.log('EnumAuthError is:');
       this.errorHandle = new AuthErrorHandle(error);
       return;
     }

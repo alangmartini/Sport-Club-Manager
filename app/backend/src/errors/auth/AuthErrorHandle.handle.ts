@@ -30,8 +30,6 @@ class AuthErrorHandle implements IErrorHandle {
   }
 
   constructor(error: BasedError) {
-    console.log('switch is:');
-
     switch (error.type) {
       case EnumAuthError.TOKEN_INVALID:
         this.updateStatusAndOutput(ErrorMessages.invalidToken);

@@ -9,12 +9,10 @@ class JWTokenProvider implements ITokenProvider {
   hm = '';
 
   generateToken(payload: ITokenPayload): string {
-    console.log(this.hm);
     return jwt.sign(payload, this._secret);
   }
 
   verifyToken(token: string): TTokenVerifcationResult {
-    console.log(this.hm);
     // jwt will throw and error on failure
     try {
       const result = jwt.verify(token, this._secret) as ITokenPayload;
