@@ -115,4 +115,25 @@ export default class MatchesService {
 
     return numberOfAffectedRows;
   }
+
+  async updateGoals(id: string, newGoals: IUpdateGoalsBody) {
+    const newHomeTeamGoals = newGoals.homeTeamGoals;
+    const newAwayTeamGoals = newGoals.awayTeamGoals;
+
+    const [numberOfAffectedRows, updatedMatchArr] = await this.matchesModel
+      .update({
+        homeTeamGoals: newHomeTeamGoals,
+        awayTeamGoals: newAwayTeamGoals,
+      }, {
+        where: { id },
+        returning: true,
+      }) as [number, IMatch[]];
+
+    if (numberOfAffectedRows === 0) {
+      const error = new BasedError('Match not found', EnumErrorHTTP.NOT_FOUND);
+      throw error;
+    }
+
+    return updatedMatchArr[0];
+  }
 }
