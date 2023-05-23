@@ -68,7 +68,6 @@ describe('GET /matches with filters', function () {
         .resolves(matchesMock.filteredTeamsHomeTeamSaoPaulo as Array<IMatch>);
 
       chaiHttpResponse = await chai.request(app).get('/matches?homeTeam=Sao%20Paulo');
-      console.log('chaiHttpResponse is:', chaiHttpResponse.body);
 
       expect(chaiHttpResponse.body).to.deep.equal(matchesMock.filteredTeamsHomeTeamSaoPaulo);
       expect(chaiHttpResponse.status).to.equal(StatusCodes.OK);
@@ -89,28 +88,27 @@ describe('GET /matches with filters', function () {
 describe('PATCH /matches/:id/finish', function () {
   let chaiHttpResponse: Response;
   let ModelStub: sinon.SinonStub;
+  describe('Succeful routes', async function () {
+    it('Should finish a match', async function () {
+      const mockMatch = matchesMock.matchWithId;
+      const token = await logIn();
 
-  describe('Succeful routes', function () {
-    it('Should finish a match', async function() {
-    const mockMatch = matchesMock.matchWithId;
-    const token = await logIn();
+      ModelStub = sinon.stub(Matches, 'update').callsFake(async () => {
+        mockMatch.inProgress = false;
 
-    ModelStub = sinon.stub(Matches, 'update').callsFake(async () => {
-      mockMatch.inProgress = false;
+        return [1];
+      });
 
-      return [1];
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/1/finish')
+        .set('authorization', token.token);
+
+      expect(mockMatch.inProgress).to.equal(false);
+      expect(chaiHttpResponse.body).to.deep.equal({ message: 'Finished' });
+      expect(chaiHttpResponse.status).to.equal(StatusCodes.OK);
     });
-
-    chaiHttpResponse = await chai
-      .request(app)
-      .patch('/matches/1/finish')
-      .set('authorization', token.token)
-
-    expect(mockMatch.inProgress).to.equal(false);
-    expect(chaiHttpResponse.body).to.deep.equal({ "message": "Finished" });
-    expect(chaiHttpResponse.status).to.equal(StatusCodes.OK)
-    });
-  })
+  });
 });
 
 describe('PATCH /matches/:id', function () {
@@ -118,73 +116,130 @@ describe('PATCH /matches/:id', function () {
   let ModelStub: sinon.SinonStub;
 
   describe('Succeful routes', function () {
-    it('Should update a match goals', async function() {
-    const mockMatch = matchesMock.matchWithId;
-    const goalsBody = {
-      homeTeamGoals: 3,
-      awayTeamGoals: 1,
-    }
-    const updatedMockMatch = { ...mockMatch, ...goalsBody };
-    interface teste {
-      [key: string]: number
-    }
+    it('Should update a match goals', async function () {
+      const mockMatch = matchesMock.matchWithId;
+      const goalsBody = {
+        homeTeamGoals: 3,
+        awayTeamGoals: 1,
+      };
+      const updatedMockMatch = { ...mockMatch, ...goalsBody };
 
-    /*
+      /*
       'Any' is used here because sequelize update has a { returning: true } method
       where it returns the updated entity.
       But sinon.stub can't acess the updated type and ts don't have a better way
       to work around this situation.
     */
-    ModelStub = sinon.stub(Matches, 'update').callsFake(async (): Promise<any> => {
-      mockMatch.homeTeamGoals = goalsBody.homeTeamGoals;
-      mockMatch.awayTeamGoals = goalsBody.awayTeamGoals;
+      ModelStub = sinon.stub(Matches, 'update').callsFake(async (): Promise<any> => {
+        mockMatch.homeTeamGoals = goalsBody.homeTeamGoals;
+        mockMatch.awayTeamGoals = goalsBody.awayTeamGoals;
 
-      return [1, [updatedMockMatch]];
-    } );
+        return [1, [updatedMockMatch]];
+      });
 
+      const token = await logIn();
 
-    const token = await logIn();
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/1')
+        .set('authorization', token.token)
+        .send(goalsBody);
 
-    chaiHttpResponse = await chai
-      .request(app)
-      .patch('/matches/1')
-      .set('authorization', token.token)
-      .send(goalsBody);
-
-    
-    expect(chaiHttpResponse.body).to.deep.equal({ updatedMatch: updatedMockMatch });
-    expect(chaiHttpResponse.status).to.equal(StatusCodes.OK)
+      expect(chaiHttpResponse.body).to.deep.equal({ updatedMatch: updatedMockMatch });
+      expect(chaiHttpResponse.status).to.equal(StatusCodes.OK);
     });
   });
 
   describe('Unsucceful routes', function () {
-    it('When no body is given, should return a error', async function() {
-    const token = await logIn();
+    it('When no body is given, should return a error', async function () {
+      const token = await logIn();
 
-    chaiHttpResponse = await chai
-      .request(app)
-      .patch('/matches/1')
-      .set('authorization', token.token)
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/1')
+        .set('authorization', token.token);
 
-      expect(chaiHttpResponse.body).to.deep.equal({ message: ErrorMessages.noGoalsBody.output.message });
-    expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status)
+      expect(chaiHttpResponse.body).to.deep.equal({
+        message: ErrorMessages.noGoalsBody.output.message,
+      });
+      expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status);
     });
 
-    it('When a empty body is given, should return a error', async function() {
-    const token = await logIn();
+    it('When a empty body is given, should return a error', async function () {
+      const token = await logIn();
 
-    chaiHttpResponse = await chai
-      .request(app)
-      .patch('/matches/1')
-      .set('authorization', token.token)
-      .send({})
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/1')
+        .set('authorization', token.token)
+        .send({});
 
-      expect(chaiHttpResponse.body).to.deep.equal({ message: ErrorMessages.noGoalsBody.output.message });
-      expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status)
+      expect(chaiHttpResponse.body).to.deep.equal({
+        message: ErrorMessages.noGoalsBody.output.message,
+      });
+      expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status);
     });
-  })
+  });
 });
 
 describe('POST /matches', function () {
   let chaiHttpResponse: Response;
+  let ModelStub: sinon.SinonStub;
+
+  // describe.('Succeful routes', function () {
+  //   it('Should create a match goals', async function() {
+  //   const mockMatch = matchesMock.matchWithId;
+
+  //   /*
+  //     'Any' is used here because sequelize update has a { returning: true } method
+  //     where it returns the updated entity.
+  //     But sinon.stub can't acess the updated type and ts don't have a better way
+  //     to work around this situation.
+  //   */
+  //   ModelStub = sinon.stub(Matches, 'update').callsFake(async (): Promise<any> => {
+  //     mockMatch.homeTeamGoals = goalsBody.homeTeamGoals;
+  //     mockMatch.awayTeamGoals = goalsBody.awayTeamGoals;
+
+  //     return [1, [updatedMockMatch]];
+  //   } );
+
+  //   const token = await logIn();
+
+  //   chaiHttpResponse = await chai
+  //     .request(app)
+  //     .patch('/matches/1')
+  //     .set('authorization', token.token)
+  //     .send(goalsBody);
+
+  //   expect(chaiHttpResponse.body).to.deep.equal({ updatedMatch: updatedMockMatch });
+  //   expect(chaiHttpResponse.status).to.equal(StatusCodes.OK)
+  //   });
+  // });
+
+  // describe('Unsucceful routes', function () {
+  //   it('When no body is given, should return a error', async function() {
+  //   const token = await logIn();
+
+  //   chaiHttpResponse = await chai
+  //     .request(app)
+  //     .patch('/matches/1')
+  //     .set('authorization', token.token)
+
+  //     expect(chaiHttpResponse.body).to.deep.equal({ message: ErrorMessages.noGoalsBody.output.message });
+  //   expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status)
+  //   });
+
+  //   it('When a empty body is given, should return a error', async function() {
+  //   const token = await logIn();
+
+  //   chaiHttpResponse = await chai
+  //     .request(app)
+  //     .patch('/matches/1')
+  //     .set('authorization', token.token)
+  //     .send({})
+
+  //     expect(chaiHttpResponse.body).to.deep.equal({ message: ErrorMessages.noGoalsBody.output.message });
+  //     expect(chaiHttpResponse.status).to.equal(ErrorMessages.noGoalsBody.status)
+  //   });
+  // })
 });
