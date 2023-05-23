@@ -1,4 +1,5 @@
 @types/joi
+@types/jsonwebtoken
 @hapi/boom
 bcrypt
-http
+http-status-codes
