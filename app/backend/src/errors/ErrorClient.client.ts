@@ -10,9 +10,32 @@ import EnumExistenceError from '../enums/ExistenceError.enum';
 import ExistenceErrorHandle from './existence/ExistenceErrorHandle.handle';
 import EnumAuthError from '../enums/AuthError.enum';
 import AuthErrorHandle from './auth/AuthErrorHandle.handle';
+import EnumBusinessRulesError from '../enums/BusinessRulesError.enum';
 
 class ErrorClient implements IErrorClient {
   errorHandle: IErrorHandle;
+  errorsHandlers = [
+    {
+      handle: BoomErrorHandle,
+      enum: Object.keys(EnumErrorHTTP),
+    },
+    {
+      handle: JoiValidationErrorHandle,
+      enum: Object.keys(EnumErrorValidation),
+    },
+    {
+      handle: ExistenceErrorHandle,
+      enum: Object.keys(EnumExistenceError),
+    },
+    {
+      handle: AuthErrorHandle,
+      enum: Object.keys(EnumAuthError),
+    },
+    // {
+    //   enum: EnumBusinessRulesError,
+    //   handle: EnumBusinessRulesError,
+    // }
+  ];
 
   constructor(error: BasedError) {
     /*
@@ -21,32 +44,17 @@ class ErrorClient implements IErrorClient {
       It also provide an easy way to change how errors are handled,
       since you just need to create a new Handle and insert here.
     */
+    const errorObject = this.errorsHandlers
+      .find((errorsObjects) => {
+        const isIn = errorsObjects.enum.includes(error.type);
 
-    /*
-      Errors come here as normal Errors and then
-      mapped to Boom errors.
-    */
-    if (error.type in EnumErrorHTTP) {
-      this.errorHandle = new BoomErrorHandle(error);
-      return;
-    }
+        return isIn;
+      });
 
-    if (error.type in EnumErrorValidation) {
-      this.errorHandle = new JoiValidationErrorHandle(error);
-      return;
-    }
+    const HandleToInstantiate = errorObject?.handle;
 
-    if (error.type in EnumExistenceError) {
-      this.errorHandle = new ExistenceErrorHandle(error);
-      return;
-    }
-
-    if (error.type in EnumAuthError) {
-      this.errorHandle = new AuthErrorHandle(error);
-      return;
-    }
-
-    this.errorHandle = new BoomErrorHandle(error);
+    this.errorHandle = HandleToInstantiate
+      ? new HandleToInstantiate(error) : new BoomErrorHandle(error);
   }
 
   getStatus(): number {
