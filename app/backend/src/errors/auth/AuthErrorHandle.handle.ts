@@ -5,7 +5,7 @@ import IErrorHandle from '../../interfaces/errors/IErrorHandle.interface';
 import BasedError from '../BasedError.class';
 import EnumAuthError from '../../enums/AuthError.enum';
 
-const ErrorMessages = {
+const ExistenceErrorMessages = {
   invalidToken: {
     output: { message: 'Token must be a valid token' },
     status: StatusCodes.UNAUTHORIZED,
@@ -32,11 +32,11 @@ class AuthErrorHandle implements IErrorHandle {
   constructor(error: BasedError) {
     switch (error.type) {
       case EnumAuthError.TOKEN_INVALID:
-        this.updateStatusAndOutput(ErrorMessages.invalidToken);
+        this.updateStatusAndOutput(ExistenceErrorMessages.invalidToken);
 
         break;
       default:
-        this.updateStatusAndOutput(ErrorMessages.internalServerError);
+        this.updateStatusAndOutput(ExistenceErrorMessages.internalServerError);
     }
   }
 }

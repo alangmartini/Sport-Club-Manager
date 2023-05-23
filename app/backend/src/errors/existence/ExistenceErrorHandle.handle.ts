@@ -5,7 +5,7 @@ import IErrorHandle from '../../interfaces/errors/IErrorHandle.interface';
 import BasedError from '../BasedError.class';
 import EnumExistenceError from '../../enums/ExistenceError.enum';
 
-export const ErrorMessages = {
+export const ExistenceErrorMessages = {
   noEmailAndPassword: {
     output: { message: 'All fields must be filled' },
     status: StatusCodes.BAD_REQUEST,
@@ -26,6 +26,10 @@ export const ErrorMessages = {
     output: { message: 'No goals for home and away team provided' },
     status: StatusCodes.BAD_REQUEST,
   },
+  noMatchCreateBody: {
+    output: { message: 'No body for creating a new match sent' },
+    status: StatusCodes.BAD_REQUEST,
+  },
 };
 
 class ExistenceErrorHandle implements IErrorHandle {
@@ -40,20 +44,20 @@ class ExistenceErrorHandle implements IErrorHandle {
   constructor(error: BasedError) {
     switch (error.type) {
       case EnumExistenceError.NO_EMAIL_AND_PASSWORD:
-        this.updateStatusAndOutput(ErrorMessages.noEmailAndPassword);
+        this.updateStatusAndOutput(ExistenceErrorMessages.noEmailAndPassword);
 
         break;
       case EnumExistenceError.NO_TOKEN:
-        this.updateStatusAndOutput(ErrorMessages.noToken);
+        this.updateStatusAndOutput(ExistenceErrorMessages.noToken);
 
         break;
 
       case EnumExistenceError.NO_GOALS_BODY:
-        this.updateStatusAndOutput(ErrorMessages.noGoalsBody);
+        this.updateStatusAndOutput(ExistenceErrorMessages.noGoalsBody);
         break;
 
       default:
-        this.updateStatusAndOutput(ErrorMessages.internalServerError);
+        this.updateStatusAndOutput(ExistenceErrorMessages.internalServerError);
     }
   }
 }
