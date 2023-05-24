@@ -15,10 +15,14 @@ import matchesMock from './mocks/matches/matches.mock';
 import bodyMock from './mocks/matches/body.mock';
 import teamsMock from './mocks/teams/teams.mock';
 
+// Error messages
+import { ExistenceErrorMessages } from '../errors/existence/ExistenceErrorHandle.handle';
+import { validationErrorMessages } from '../errors/validation/ValidationErrorHandle.handle';
+import { businessErrorMessages } from '../errors/business/BusinessErrorhandle.handle'
+
 // Models
 import Matches from '../database/models/matches.model';
 import { logIn } from './token.test';
-import { ExistenceErrorMessages } from '../errors/existence/ExistenceErrorHandle.handle';
 import ITeams from '../interfaces/teams/teams.interface';
 import { ValidationError } from 'sequelize';
 
@@ -232,10 +236,10 @@ describe('POST /matches', function () {
       .set('authorization', token.token)
       .send(bodyMock.postMatchBodySameTeam)
 
-      expect(chaiHttpResponse.body).to.deep.equal({ message: validationErrorMessages.sameTeam.output.message });
-      expect(chaiHttpResponse.status).to.equal(validationErrorMessages.sameTeam.status)
+      expect(chaiHttpResponse.body).to.deep.equal({ message: validationErrorMessages.invalidSameTeamsMatch.output.message });
+      expect(chaiHttpResponse.status).to.equal(validationErrorMessages.invalidSameTeamsMatch.status)
     });
-    it('When a body ave a non existent team, should return a error', async function() {
+    it('When a body have a non existent team, should return a error', async function() {
     sinon.stub(Matches, 'findByPk')
       .onCall(0).resolves(null)
       .onCall(1).resolves(teamsMock.SECOND_TEAM as ITeams)
@@ -248,8 +252,8 @@ describe('POST /matches', function () {
       .set('authorization', token.token)
       .send(bodyMock.postMatchBodyNonExistentTeam)
 
-      expect(chaiHttpResponse.body).to.deep.equal({ message: businessErrorMessages.noGoalsBody.output.message });
-      expect(chaiHttpResponse.status).to.equal(businessErrorMessages.noGoalsBody.status)
+      expect(chaiHttpResponse.body).to.deep.equal({ message: businessErrorMessages.nonExistentTeam.output.message });
+      expect(chaiHttpResponse.status).to.equal(businessErrorMessages.nonExistentTeam.status)
     });
   })
 });
