@@ -3,29 +3,27 @@ import {
   Request,
   Response,
 } from 'express';
-import EnumValidation from '../../enums/validation.enum';
+// import EnumValidation from '../../enums/validation.enum';
 import IUserBody from '../../interfaces/users/IUserBody.interface';
 import IValidationMiddleware
   from '../../interfaces/modules/validation/IValidationMiddleware.interface';
 import ValidationClient from '../../modules/validation/ValidationClient.client';
-import TRuleSet from '../../types/TRuleSet.type';
+// import TRuleSet from '../../types/TRuleSet.type';
 import TValidateResult from '../../types/TValidateResult.type';
 import BasedError from '../../errors/BasedError.class';
 import EnumErrorValidation from '../../enums/ErrorValidation.enum';
 
 class validateEmailAndPassword implements IValidationMiddleware {
   validationClient: ValidationClient<IUserBody>;
-  ruleSet: TRuleSet = EnumValidation
-    .EMAIL_AND_PASSWORD;
 
-  typeOfError: string = EnumErrorValidation
+  typeOfError: EnumErrorValidation = EnumErrorValidation
     .EMAIL_OR_PASSWORD_INVALID;
 
   constructor() {
     this.middleware = this.middleware.bind(this);
 
     this.validationClient = new ValidationClient(
-      this.ruleSet,
+      // this.ruleSet,
       this.typeOfError,
     );
   }

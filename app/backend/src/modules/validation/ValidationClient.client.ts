@@ -1,5 +1,6 @@
+import EnumErrorValidation from '../../enums/ErrorValidation.enum';
 import IValidationProvider from '../../interfaces/modules/validation/IValidationProvider.interface';
-import TRuleSet from '../../types/TRuleSet.type';
+// import TRuleSet from '../../types/TRuleSet.type';
 import TValidateResult from '../../types/TValidateResult.type';
 import JOIProvider from './JOI/JOIProvider.provider';
 
@@ -12,8 +13,8 @@ import JOIProvider from './JOI/JOIProvider.provider';
 class validationClient<T> {
   validationProvider: IValidationProvider;
 
-  constructor(ruleSet: TRuleSet, typeOfError: string) {
-    this.validationProvider = new JOIProvider(ruleSet, typeOfError);
+  constructor(typeOfError: EnumErrorValidation) {
+    this.validationProvider = new JOIProvider(typeOfError);
   }
 
   validate(dataToValidate: T): TValidateResult {

@@ -1,29 +1,33 @@
 import * as JOI from 'joi';
 import IJOISchema from '../../../interfaces/modules/validation/Joi/IJOISchema.interface';
-import EnumValidation from '../../../enums/validation.enum';
+// import EnumValidation from '../../../enums/validation.enum';
 import IValidationProvider
   from '../../../interfaces/modules/validation/IValidationProvider.interface';
 import TValidateResult from '../../../types/TValidateResult.type';
-import TRuleSet from '../../../types/TRuleSet.type';
+// import TRuleSet from '../../../types/TRuleSet.type';
 import BasedError from '../../../errors/BasedError.class';
 import EnumErrorHTTP from '../../../enums/HTTPerror.enum';
 import SchemaEmailAndPassword from './schemas/emailAndPassword.schema';
+import SchemaNewMatch from './schemas/noSameTeams.schema';
+import EnumErrorValidation from '../../../enums/ErrorValidation.enum';
 
 class JOIProvider<T> implements IValidationProvider {
   // ainder
   private _schema?: IJOISchema;
-  ruleSet: TRuleSet;
   typeOfError: string;
 
-  constructor(ruleSet: TRuleSet, typeOfError: string) {
-    this.ruleSet = ruleSet;
+  constructor(typeOfError: EnumErrorValidation) {
+    // this.ruleSet = ruleSet;
     this.typeOfError = typeOfError;
 
-    switch (ruleSet) {
-      case EnumValidation.EMAIL_AND_PASSWORD:
+    switch (typeOfError) {
+      case EnumErrorValidation.EMAIL_OR_PASSWORD_INVALID:
         this._schema = new SchemaEmailAndPassword();
         break;
 
+      case EnumErrorValidation.SAME_TEAM_ERROR:
+        this._schema = new SchemaNewMatch();
+        break;
       default:
         break;
     }
