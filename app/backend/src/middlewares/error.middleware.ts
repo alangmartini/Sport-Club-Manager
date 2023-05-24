@@ -11,7 +11,7 @@ import BasedError from '../errors/BasedError.class';
 
 function errorMiddleware(
   error: BasedError,
-  req: Request,
+  _req: Request,
   res: Response,
   _next: NextFunction,
 ) {

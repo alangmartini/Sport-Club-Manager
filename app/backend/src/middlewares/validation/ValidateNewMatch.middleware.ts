@@ -11,7 +11,7 @@ import BasedError from '../../errors/BasedError.class';
 import EnumErrorValidation from '../../enums/ErrorValidation.enum';
 import INewMatchBody from '../../interfaces/matches/INewMatchBody.interface';
 
-class validateNewMatch implements IValidationMiddleware {
+class ValidateNewMatch implements IValidationMiddleware {
   validationClient: ValidationClient<INewMatchBody>;
 
   typeOfError: EnumErrorValidation = EnumErrorValidation
@@ -46,4 +46,4 @@ class validateNewMatch implements IValidationMiddleware {
   }
 }
 
-export default validateNewMatch;
+export default ValidateNewMatch;

@@ -6,6 +6,7 @@ import {
 import { StatusCodes } from 'http-status-codes';
 import MatchesService from '../services/matches.service';
 import IUpdateGoalsBody from '../interfaces/matches/IUpdateGoalsBody.interface';
+import INewMatchBody from '../interfaces/matches/INewMatchBody.interface';
 
 export default class MatchesController {
   private matchService;
@@ -16,6 +17,7 @@ export default class MatchesController {
     this.findAllByQuery = this.findAllByQuery.bind(this);
     this.finishMatch = this.finishMatch.bind(this);
     this.updateGoals = this.updateGoals.bind(this);
+    this.createMatch = this.createMatch.bind(this);
 
     this.matchService = new MatchesService();
   }
@@ -98,6 +100,18 @@ export default class MatchesController {
       const updatedMatch = await this.matchService.updateGoals(id, newGoals);
 
       res.status(StatusCodes.OK).json({ updatedMatch });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async createMatch(req: Request, res: Response, next: NextFunction) {
+    const matchInfo: INewMatchBody = req.body;
+    try {
+      const newMatch = await this.matchService.createMatch(matchInfo);
+
+      // Return the new match created
+      res.status(StatusCodes.CREATED).json(newMatch);
     } catch (error) {
       next(error);
     }

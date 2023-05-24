@@ -5,6 +5,8 @@ import BasedError from '../errors/BasedError.class';
 import IMatchesQuery from '../interfaces/matches/IMatchesQuery.interface';
 import Teams from '../database/models/teams.model';
 import IUpdateGoalsBody from '../interfaces/matches/IUpdateGoalsBody.interface';
+import EnumBusinessRulesError from '../enums/BusinessRulesError.enum';
+import INewMatchBody from '../interfaces/matches/INewMatchBody.interface';
 
 type queryParameter = string | undefined | boolean;
 
@@ -20,26 +22,7 @@ export default class MatchesService {
     return !!object.id;
   }
 
-  async findAll(): Promise<IMatch[]> {
-    const allMatches = (await this.matchesModel.findAll(
-      {
-        include:
-        [
-          this.buildTeamInclude('homeTeam'), this.buildTeamInclude('awayTeam'),
-        ],
-      },
-    )) as IMatch[];
-
-    if (!allMatches.every(MatchesService.assertIsMatch) || !allMatches.length) {
-      const error = new BasedError('Internal Error', EnumErrorHTTP.BAD_IMPLEMENTATION);
-
-      throw error;
-    }
-
-    return allMatches;
-  }
-
-  buildTeamIncludeWhere(team: queryParameter, alias: string) {
+  private buildTeamIncludeWhere(team: queryParameter, alias: string) {
     return {
       model: this.teamsModel,
       as: alias,
@@ -48,7 +31,7 @@ export default class MatchesService {
     };
   }
 
-  buildTeamInclude(alias: string) {
+  private buildTeamInclude(alias: string) {
     return {
       model: this.teamsModel,
       as: alias,
@@ -56,7 +39,7 @@ export default class MatchesService {
     };
   }
 
-  constructQuery(
+  private constructQuery(
     homeTeamName: queryParameter,
     awayTeamName: queryParameter,
     inProgress: string | undefined,
@@ -72,17 +55,35 @@ export default class MatchesService {
     };
   }
 
+  private async checkTeamExists(teamId: number): Promise<boolean> {
+    const team = await this.teamsModel.findByPk(teamId);
+
+    return team !== null;
+  }
+
   async findAllByQuery(query: IMatchesQuery): Promise<IMatch[]> {
     const { homeTeam: homeTeamName, alwayTeam: alwayTeamName } = query;
     const { inProgress } = query;
 
     const sequelizeQuery = this.constructQuery(homeTeamName, alwayTeamName, inProgress);
 
-    const matches = (await this.matchesModel.findAll(
-      sequelizeQuery,
-    )) as IMatch[];
+    const matches = (await this.matchesModel.findAll(sequelizeQuery)) as IMatch[];
 
     return matches;
+  }
+
+  async findAll(): Promise<IMatch[]> {
+    const allMatches = (await this.matchesModel.findAll({
+      include: [this.buildTeamInclude('homeTeam'), this.buildTeamInclude('awayTeam')],
+    })) as IMatch[];
+
+    if (!allMatches.every(MatchesService.assertIsMatch) || !allMatches.length) {
+      const error = new BasedError('Internal Error', EnumErrorHTTP.BAD_IMPLEMENTATION);
+
+      throw error;
+    }
+
+    return allMatches;
   }
 
   async findById(id: string): Promise<IMatch> {
@@ -103,10 +104,12 @@ export default class MatchesService {
   }
 
   async finishMatch(id: string): Promise<number | undefined> {
-    const [numberOfAffectedRows] = await this.matchesModel
-      .update({ inProgress: false }, {
+    const [numberOfAffectedRows] = (await this.matchesModel.update(
+      { inProgress: false },
+      {
         where: { id },
-      }) as [number];
+      },
+    )) as [number];
 
     if (numberOfAffectedRows === 0) {
       const error = new BasedError('Match not found', EnumErrorHTTP.NOT_FOUND);
@@ -120,14 +123,16 @@ export default class MatchesService {
     const newHomeTeamGoals = newGoals.homeTeamGoals;
     const newAwayTeamGoals = newGoals.awayTeamGoals;
 
-    const [numberOfAffectedRows, updatedMatchArr] = await this.matchesModel
-      .update({
+    const [numberOfAffectedRows, updatedMatchArr] = (await this.matchesModel.update(
+      {
         homeTeamGoals: newHomeTeamGoals,
         awayTeamGoals: newAwayTeamGoals,
-      }, {
+      },
+      {
         where: { id },
         returning: true,
-      }) as [number, IMatch[]];
+      },
+    )) as [number, IMatch[]];
 
     if (numberOfAffectedRows === 0) {
       const error = new BasedError('Match not found', EnumErrorHTTP.NOT_FOUND);
@@ -135,5 +140,27 @@ export default class MatchesService {
     }
 
     return updatedMatchArr[0];
+  }
+
+  async createMatch(matchData: INewMatchBody): Promise<IMatch> {
+    const { awayTeamGoals, awayTeamId, homeTeamGoals, homeTeamId } = matchData;
+    const homeTeamExists = await this.checkTeamExists(matchData.homeTeamId);
+    const alwayTeamExists = await this.checkTeamExists(matchData.awayTeamId);
+
+    if (!homeTeamExists || !alwayTeamExists) {
+      const error = new BasedError('Failed to create match', EnumBusinessRulesError.NO_TEAM_MATCH);
+      throw error;
+    }
+
+    const newMatch = await this.matchesModel.create({
+      awayTeamGoals, awayTeamId, homeTeamGoals, homeTeamId, inProgress: true,
+    }) as IMatch;
+
+    if (!newMatch) {
+      const error = new BasedError('Failed to create match', EnumErrorHTTP.BAD_IMPLEMENTATION);
+      throw error;
+    }
+
+    return newMatch;
   }
 }

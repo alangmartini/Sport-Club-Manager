@@ -8,7 +8,7 @@ import EnumBusinessRulesError from '../../enums/BusinessRulesError.enum';
 export const businessErrorMessages = {
   nonExistentTeam: {
     output: { message: 'There is no team with such id!' },
-    status: StatusCodes.UNAUTHORIZED,
+    status: StatusCodes.NOT_FOUND,
   },
   internalServerError: {
     output: {

@@ -1,10 +1,10 @@
 import * as express from 'express';
 import UserController from '../controllers/user.controller';
 import ValidateEmailAndPassword from
-  '../middlewares/validation/validateEmailAndPassword.middleware';
+  '../middlewares/validation/ValidateEmailAndPassword.middleware';
 import ExistenceEmailAndPassword from
-  '../middlewares/existence/existenceEmailAndPassword.middleware';
-import ExistenceToken from '../middlewares/existence/existenceToken.middleware';
+  '../middlewares/existence/ExistenceEmailAndPassword.middleware';
+import ExistenceToken from '../middlewares/existence/ExistenceToken.middleware';
 import AuthToken from '../middlewares/auth/authToken.middleware';
 
 const loginRoute = express.Router();

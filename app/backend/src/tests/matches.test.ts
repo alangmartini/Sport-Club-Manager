@@ -24,7 +24,6 @@ import { businessErrorMessages } from '../errors/business/BusinessErrorhandle.ha
 import Matches from '../database/models/matches.model';
 import { logIn } from './token.test';
 import ITeams from '../interfaces/teams/teams.interface';
-import { ValidationError } from 'sequelize';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -215,7 +214,7 @@ describe('POST /matches', function () {
 
   describe('Unsucceful routes', function () {
     it('When no body is given, should return a error', async function() {
-
+    
     const token = await logIn();
 
     chaiHttpResponse = await chai

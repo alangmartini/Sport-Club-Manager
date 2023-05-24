@@ -56,6 +56,10 @@ class ExistenceErrorHandle implements IErrorHandle {
         this.updateStatusAndOutput(ExistenceErrorMessages.noGoalsBody);
         break;
 
+      case EnumExistenceError.NO_NEW_MATCH_BODY:
+        this.updateStatusAndOutput(ExistenceErrorMessages.noMatchCreateBody);
+        break;
+
       default:
         this.updateStatusAndOutput(ExistenceErrorMessages.internalServerError);
     }
