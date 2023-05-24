@@ -10,6 +10,8 @@ import EnumExistenceError from '../enums/ExistenceError.enum';
 import ExistenceErrorHandle from './existence/ExistenceErrorHandle.handle';
 import EnumAuthError from '../enums/AuthError.enum';
 import AuthErrorHandle from './auth/AuthErrorHandle.handle';
+import EnumBusinessRulesError from '../enums/BusinessRulesError.enum';
+import BusinessErrorhandle from './business/BusinessErrorhandle.handle';
 
 class ErrorClient implements IErrorClient {
   errorHandle: IErrorHandle;
@@ -30,10 +32,10 @@ class ErrorClient implements IErrorClient {
       handle: AuthErrorHandle,
       enum: Object.keys(EnumAuthError),
     },
-    // {
-    //   enum: EnumBusinessRulesError,
-    //   handle: EnumBusinessRulesError,
-    // }
+    {
+      handle: BusinessErrorhandle,
+      enum: Object.keys(EnumBusinessRulesError),
+    },
   ];
 
   constructor(error: BasedError) {
